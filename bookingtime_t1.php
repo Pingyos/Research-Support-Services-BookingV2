@@ -82,9 +82,9 @@
                                                         <div class="col-md-2 col-12 mt-2">
                                                             <div class="form-group"></div>
                                                             <?php if (in_array($ts, $bookings)) { ?>
-                                                                <button class="col-md- col-12 btn-primary "><?php echo $ts; ?></button><br>
+                                                                <button class="col-md-12  col-12 btn btn-secondary"><?php echo $ts; ?></button><br>
                                                             <?php } else { ?>
-                                                                <button class="col-md- col-12 btn btn-primary book" data-bs-toggle="modal" data-bs-target="#exLargeModal" data-timeslot="<?php echo $ts; ?>"><?php echo $ts; ?></button>
+                                                                <button class="col-md-12 col-12 btn btn-primary book" data-bs-toggle="modal" data-bs-target="#exLargeModal" data-timeslot="<?php echo $ts; ?>"><?php echo $ts; ?></button>
                                                             <?php } ?>
                                                         </div>
                                                     <?php } ?>
