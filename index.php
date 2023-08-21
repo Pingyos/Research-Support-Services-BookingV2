@@ -16,7 +16,7 @@
               <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                 <div class="card h-100">
                   <div class="card-body">
-                    <a href="" class="btn btn-secondary col-12">Editor English Hours(Mr.Michael Cote)</a>
+                    <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours (Mr. Michael Cote)</a>
                   </div>
                 </div>
               </div>

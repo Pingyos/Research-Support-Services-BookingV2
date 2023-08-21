@@ -93,7 +93,7 @@
 
                                     function build_calendar($month, $year)
                                     {
-                                        $mysqli = new mysqli('localhost', 'root', '', 'booking');
+                                        require_once 'connnect.php';
                                         $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
                                         $firstDayOfMonth = mktime(0, 0, 0, $month, 1, $year);
                                         $numberDays = date('t', $firstDayOfMonth);
@@ -101,7 +101,7 @@
                                         $monthName = $dateComponents['month'];
                                         $dayOfWeek = $dateComponents['wday'];
                                         if ($dayOfWeek == 0) {
-                                            $dayOfWeek == 6;
+                                            $dayOfWeek = 6;
                                         } else {
                                             $dayOfWeek = $dayOfWeek - 1;
                                         }
@@ -113,20 +113,19 @@
                                         $calendar .= "<a class='btn btn-primary' href='?month=" . date('m', mktime(0, 0, 0, $month + 1, 1, $year)) . "&year=" . date('Y', mktime(0, 0, 0, $month + 1, 1, $year)) . "'>Next Month</a></center><br>";
                                         $calendar .= "<tr>";
                                         foreach ($daysOfWeek as $day) {
-                                            $calendar .= "<th  class='header'>$day</th>";
+                                            $calendar .= "<th class='header'>$day</th>";
                                         }
                                         $currentDay = 1;
                                         $calendar .= "</tr><tr>";
                                         if ($dayOfWeek > 0) {
                                             for ($k = 0; $k < $dayOfWeek; $k++) {
-                                                $calendar .= "<td  class='empty'></td>";
+                                                $calendar .= "<td class='empty'></td>";
                                             }
                                         }
                                         $month = str_pad($month, 2, "0", STR_PAD_LEFT);
 
                                         while ($currentDay <= $numberDays) {
                                             if ($dayOfWeek == 7) {
-
                                                 $dayOfWeek = 0;
                                                 $calendar .= "</tr><tr>";
                                             }
@@ -143,11 +142,10 @@
                                             } else {
                                                 $totalbookings = checkSlots($mysqli, $date);
                                                 if ($totalbookings == 6) {
-                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#'class='btn btn-primary'>Full</a>";
+                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
                                                 } else {
-
                                                     $availableslots = 6 - $totalbookings;
-                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <button class='col-12 btn btn-success' data-bs-toggle='modal' data-bs-target='#exLargeModal'>Booking</button></smail>";
+                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='bookingtime_t1.php?date=" . $date . "&title=" . urlencode($_GET['title']) . "' class='col-12 btn btn-success'>Booking</a></small>";
                                                 }
                                             }
                                             $calendar .= "</td>";
@@ -155,7 +153,6 @@
                                             $dayOfWeek++;
                                         }
                                         if ($dayOfWeek != 7) {
-
                                             $remainingDays = 7 - $dayOfWeek;
                                             for ($l = 0; $l < $remainingDays; $l++) {
                                                 $calendar .= "<td class='empty'></td>";
@@ -170,7 +167,7 @@
 
                                     function checkSlots($mysqli, $date)
                                     {
-                                        $stmt = $mysqli->prepare("select * from booking where date = ?");
+                                        $stmt = $mysqli->prepare("select * from booking_t1 where date = ?");
                                         $stmt->bind_param('s', $date);
                                         $totalbookings = 0;
                                         if ($stmt->execute()) {
@@ -179,26 +176,12 @@
                                                 while ($row = $result->fetch_assoc()) {
                                                     $totalbookings++;
                                                 }
-
                                                 $stmt->close();
                                             }
                                         }
                                         return $totalbookings;
                                     }
                                     ?>
-                                </div>
-                                <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel4">Modal title</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
