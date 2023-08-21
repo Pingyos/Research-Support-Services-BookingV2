@@ -37,7 +37,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-            window.location = "bookingtime_t1.php";
+            window.location = "bookingtime_t1.php?date=' . $date . '"; // Pass the selected date
         });
       </script>';
     } else {
