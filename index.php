@@ -13,34 +13,43 @@
         <div class="content-wrapper">
           <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
-              <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours (Mr. Michael Cote)</a>
+              <div class="col-lg-4 mb-4 order-0">
+                <div class="card">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours (Mr. Michael Cote)</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div class="col-md-6 col-lg-4 order-1 mb-4">
-                <div class="card h-100">
-                  <div class="card-header">
-                    <a href="" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
+              <div class="col-lg-4 mb-4 order-0">
+                <div class="card">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <a href="?title=Editor English Hours" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div class="col-md-6 col-lg-4 order-2 mb-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <a href="" class="btn btn-secondary col-12">Statistic Consult (Dr.Patompong Khaw-on)</a>
+              <div class="col-lg-4 mb-4 order-0">
+                <div class="card">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-12">
+                      <div class="card-body">
+                        <a href="?title=Editor English Hours" class="btn btn-secondary col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
+              <?php require_once 'footer.php'; ?>
+              <div class="content-backdrop fade"></div>
             </div>
           </div>
-          <?php require_once 'footer.php'; ?>
-          <div class="content-backdrop fade"></div>
         </div>
       </div>
     </div>

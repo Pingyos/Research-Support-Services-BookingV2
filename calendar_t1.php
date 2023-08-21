@@ -13,182 +13,189 @@
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <style>
-                                        @media only screen and (max-width: 760px),
-                                        (min-device-width: 802px) and (max-device-width: 1020px) {
+                            <div class="col-lg-12 mb-4 order-0">
+                                <div class="card">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-sm-12">
+                                            <div class="card-body">
+                                                <style>
+                                                    @media only screen and (max-width: 760px),
+                                                    (min-device-width: 802px) and (max-device-width: 1020px) {
 
-                                            /* Force table to not be like tables anymore */
-                                            table,
-                                            thead,
-                                            tbody,
-                                            th,
-                                            td,
-                                            tr {
-                                                display: block;
+                                                        /* Force table to not be like tables anymore */
+                                                        table,
+                                                        thead,
+                                                        tbody,
+                                                        th,
+                                                        td,
+                                                        tr {
+                                                            display: block;
 
-                                            }
+                                                        }
 
-                                            .empty {
-                                                display: none;
-                                            }
+                                                        .empty {
+                                                            display: none;
+                                                        }
 
-                                            th {
-                                                position: absolute;
-                                                top: -9999px;
-                                                left: -9999px;
-                                            }
+                                                        th {
+                                                            position: absolute;
+                                                            top: -9999px;
+                                                            left: -9999px;
+                                                        }
 
-                                            tr {
-                                                border: 1px solid #ccc;
-                                            }
+                                                        tr {
+                                                            border: 1px solid #ccc;
+                                                        }
 
-                                            td {
-                                                border: none;
-                                                border-bottom: 1px solid #eee;
-                                                position: relative;
-                                                padding-left: 50%;
-                                            }
+                                                        td {
+                                                            border: none;
+                                                            border-bottom: 1px solid #eee;
+                                                            position: relative;
+                                                            padding-left: 50%;
+                                                        }
 
-                                            td:nth-of-type(1):before {
-                                                content: "Sunday";
-                                            }
+                                                        td:nth-of-type(1):before {
+                                                            content: "Sunday";
+                                                        }
 
-                                            td:nth-of-type(2):before {
-                                                content: "Monday";
-                                            }
+                                                        td:nth-of-type(2):before {
+                                                            content: "Monday";
+                                                        }
 
-                                            td:nth-of-type(3):before {
-                                                content: "Tuesday";
-                                            }
+                                                        td:nth-of-type(3):before {
+                                                            content: "Tuesday";
+                                                        }
 
-                                            td:nth-of-type(4):before {
-                                                content: "Wednesday";
-                                            }
+                                                        td:nth-of-type(4):before {
+                                                            content: "Wednesday";
+                                                        }
 
-                                            td:nth-of-type(5):before {
-                                                content: "Thursday";
-                                            }
+                                                        td:nth-of-type(5):before {
+                                                            content: "Thursday";
+                                                        }
 
-                                            td:nth-of-type(6):before {
-                                                content: "Friday";
-                                            }
+                                                        td:nth-of-type(6):before {
+                                                            content: "Friday";
+                                                        }
 
-                                            td:nth-of-type(7):before {
-                                                content: "Saturday";
-                                            }
-                                        }
-                                    </style>
-                                    <?php
-                                    $dateComponents = getdate();
-                                    if (isset($_GET['month']) && isset($_GET['year'])) {
-                                        $month = $_GET['month'];
-                                        $year = $_GET['year'];
-                                    } else {
-                                        $month = $dateComponents['mon'];
-                                        $year = $dateComponents['year'];
-                                    }
-                                    echo build_calendar($month, $year);
-
-                                    function build_calendar($month, $year)
-                                    {
-                                        require_once 'connnect.php';
-                                        $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-                                        $firstDayOfMonth = mktime(0, 0, 0, $month, 1, $year);
-                                        $numberDays = date('t', $firstDayOfMonth);
-                                        $dateComponents = getdate($firstDayOfMonth);
-                                        $monthName = $dateComponents['month'];
-                                        $dayOfWeek = $dateComponents['wday'];
-                                        if ($dayOfWeek == 0) {
-                                            $dayOfWeek = 6;
-                                        } else {
-                                            $dayOfWeek = $dayOfWeek - 1;
-                                        }
-                                        $datetoday = date('Y-m-d');
-                                        $calendar = "<table class='table table-bordered'>";
-                                        $calendar .= "<center><h2>$monthName $year</h2>";
-                                        $calendar .= "<a class='btn btn-primary' href='?month=" . date('m', mktime(0, 0, 0, $month - 1, 1, $year)) . "&year=" . date('Y', mktime(0, 0, 0, $month - 1, 1, $year)) . "'>Previous Month</a> ";
-                                        $calendar .= " <a class='btn btn-primary' href='?month=" . date('m') . "&year=" . date('Y') . "'>Current Month</a> ";
-                                        $calendar .= "<a class='btn btn-primary' href='?month=" . date('m', mktime(0, 0, 0, $month + 1, 1, $year)) . "&year=" . date('Y', mktime(0, 0, 0, $month + 1, 1, $year)) . "'>Next Month</a></center><br>";
-                                        $calendar .= "<tr>";
-                                        foreach ($daysOfWeek as $day) {
-                                            $calendar .= "<th class='header'>$day</th>";
-                                        }
-                                        $currentDay = 1;
-                                        $calendar .= "</tr><tr>";
-                                        if ($dayOfWeek > 0) {
-                                            for ($k = 0; $k < $dayOfWeek; $k++) {
-                                                $calendar .= "<td class='empty'></td>";
-                                            }
-                                        }
-                                        $month = str_pad($month, 2, "0", STR_PAD_LEFT);
-
-                                        while ($currentDay <= $numberDays) {
-                                            if ($dayOfWeek == 7) {
-                                                $dayOfWeek = 0;
-                                                $calendar .= "</tr><tr>";
-                                            }
-                                            $currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
-                                            $date = "$year-$month-$currentDayRel";
-
-                                            $dayname = strtolower(date('l', strtotime($date)));
-                                            $eventNum = 0;
-                                            $today = $date == date('Y-m-d') ? "today" : "";
-                                            if ($dayname == 'sunday' || $dayname == 'monday' || $dayname == 'tuesday'  || $dayname == 'friday' || $dayname == 'saturday') {
-                                                $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
-                                            } elseif ($date < date('Y-m-d')) {
-                                                $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
-                                            } else {
-                                                $totalbookings = checkSlots($mysqli, $date);
-                                                if ($totalbookings == 6) {
-                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
+                                                        td:nth-of-type(7):before {
+                                                            content: "Saturday";
+                                                        }
+                                                    }
+                                                </style>
+                                                <?php
+                                                $dateComponents = getdate();
+                                                if (isset($_GET['month']) && isset($_GET['year'])) {
+                                                    $month = $_GET['month'];
+                                                    $year = $_GET['year'];
                                                 } else {
-                                                    $availableslots = 6 - $totalbookings;
-                                                    $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='bookingtime_t1.php?date=" . $date . "&title=" . urlencode($_GET['title']) . "' class='col-12 btn btn-success'>Booking</a></small>";
+                                                    $month = $dateComponents['mon'];
+                                                    $year = $dateComponents['year'];
                                                 }
-                                            }
-                                            $calendar .= "</td>";
-                                            $currentDay++;
-                                            $dayOfWeek++;
-                                        }
-                                        if ($dayOfWeek != 7) {
-                                            $remainingDays = 7 - $dayOfWeek;
-                                            for ($l = 0; $l < $remainingDays; $l++) {
-                                                $calendar .= "<td class='empty'></td>";
-                                            }
-                                        }
-                                        $calendar .= "</tr>";
+                                                echo build_calendar($month, $year);
 
-                                        $calendar .= "</table>";
+                                                function build_calendar($month, $year)
+                                                {
+                                                    require_once 'connnect.php';
+                                                    $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+                                                    $firstDayOfMonth = mktime(0, 0, 0, $month, 1, $year);
+                                                    $numberDays = date('t', $firstDayOfMonth);
+                                                    $dateComponents = getdate($firstDayOfMonth);
+                                                    $monthName = $dateComponents['month'];
+                                                    $dayOfWeek = $dateComponents['wday'];
+                                                    if ($dayOfWeek == 0) {
+                                                        $dayOfWeek = 6;
+                                                    } else {
+                                                        $dayOfWeek = $dayOfWeek - 1;
+                                                    }
+                                                    $datetoday = date('Y-m-d');
+                                                    $calendar = "<table class='table table-bordered'>";
+                                                    $calendar .= "<center><h2>$monthName $year</h2>";
+                                                    $calendar .= "<a class='btn btn-primary' href='?month=" . date('m', mktime(0, 0, 0, $month - 1, 1, $year)) . "&year=" . date('Y', mktime(0, 0, 0, $month - 1, 1, $year)) . "'>Previous Month</a> ";
+                                                    $calendar .= " <a class='btn btn-primary' href='?month=" . date('m') . "&year=" . date('Y') . "'>Current Month</a> ";
+                                                    $calendar .= "<a class='btn btn-primary' href='?month=" . date('m', mktime(0, 0, 0, $month + 1, 1, $year)) . "&year=" . date('Y', mktime(0, 0, 0, $month + 1, 1, $year)) . "'>Next Month</a></center><br>";
+                                                    $calendar .= "<tr>";
+                                                    foreach ($daysOfWeek as $day) {
+                                                        $calendar .= "<th class='header'>$day</th>";
+                                                    }
+                                                    $currentDay = 1;
+                                                    $calendar .= "</tr><tr>";
+                                                    if ($dayOfWeek > 0) {
+                                                        for ($k = 0; $k < $dayOfWeek; $k++) {
+                                                            $calendar .= "<td class='empty'></td>";
+                                                        }
+                                                    }
+                                                    $month = str_pad($month, 2, "0", STR_PAD_LEFT);
 
-                                        echo $calendar;
-                                    }
+                                                    while ($currentDay <= $numberDays) {
+                                                        if ($dayOfWeek == 7) {
+                                                            $dayOfWeek = 0;
+                                                            $calendar .= "</tr><tr>";
+                                                        }
+                                                        $currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
+                                                        $date = "$year-$month-$currentDayRel";
 
-                                    function checkSlots($mysqli, $date)
-                                    {
-                                        $stmt = $mysqli->prepare("select * from booking_t1 where date = ?");
-                                        $stmt->bind_param('s', $date);
-                                        $totalbookings = 0;
-                                        if ($stmt->execute()) {
-                                            $result = $stmt->get_result();
-                                            if ($result->num_rows > 0) {
-                                                while ($row = $result->fetch_assoc()) {
-                                                    $totalbookings++;
+                                                        $dayname = strtolower(date('l', strtotime($date)));
+                                                        $eventNum = 0;
+                                                        $today = $date == date('Y-m-d') ? "today" : "";
+                                                        if ($dayname == 'sunday' || $dayname == 'monday' || $dayname == 'tuesday'  || $dayname == 'friday' || $dayname == 'saturday') {
+                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
+                                                        } elseif ($date < date('Y-m-d')) {
+                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
+                                                        } else {
+                                                            $totalbookings = checkSlots($mysqli, $date);
+                                                            if ($totalbookings == 6) {
+                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
+                                                            } else {
+                                                                $availableslots = 6 - $totalbookings;
+                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='bookingtime_t1.php?date=" . $date . "&title=" . urlencode($_GET['title']) . "' class='col-12 btn btn-success'>Booking</a></small>";
+                                                            }
+                                                        }
+                                                        $calendar .= "</td>";
+                                                        $currentDay++;
+                                                        $dayOfWeek++;
+                                                    }
+                                                    if ($dayOfWeek != 7) {
+                                                        $remainingDays = 7 - $dayOfWeek;
+                                                        for ($l = 0; $l < $remainingDays; $l++) {
+                                                            $calendar .= "<td class='empty'></td>";
+                                                        }
+                                                    }
+                                                    $calendar .= "</tr>";
+
+                                                    $calendar .= "</table>";
+
+                                                    echo $calendar;
                                                 }
-                                                $stmt->close();
-                                            }
-                                        }
-                                        return $totalbookings;
-                                    }
-                                    ?>
+
+                                                function checkSlots($mysqli, $date)
+                                                {
+                                                    $stmt = $mysqli->prepare("select * from booking_t1 where date = ?");
+                                                    $stmt->bind_param('s', $date);
+                                                    $totalbookings = 0;
+                                                    if ($stmt->execute()) {
+                                                        $result = $stmt->get_result();
+                                                        if ($result->num_rows > 0) {
+                                                            while ($row = $result->fetch_assoc()) {
+                                                                $totalbookings++;
+                                                            }
+                                                            $stmt->close();
+                                                        }
+                                                    }
+                                                    return $totalbookings;
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <?php require_once 'footer.php'; ?>
+                            <div class="content-backdrop fade"></div>
                         </div>
-                        <?php require_once 'footer.php'; ?>
-                        <div class="content-backdrop fade"></div>
                     </div>
                 </div>
+
             </div>
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
