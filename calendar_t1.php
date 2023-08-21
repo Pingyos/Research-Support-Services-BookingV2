@@ -96,7 +96,7 @@
 
                                                 function build_calendar($month, $year)
                                                 {
-                                                    require_once 'connnect.php';
+                                                    require_once 'connect.php';
                                                     $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
                                                     $firstDayOfMonth = mktime(0, 0, 0, $month, 1, $year);
                                                     $numberDays = date('t', $firstDayOfMonth);

@@ -19,7 +19,7 @@
                                         <div class="col-sm-12">
                                             <div class="card-body">
                                                 <?php
-                                                require_once 'connnect.php';
+                                                require_once 'connect.php';
                                                 if (isset($_GET['date'])) {
                                                     $title = $_GET['title'];
                                                     $date = $_GET['date'];
@@ -97,42 +97,42 @@
                                                             <h5 class="modal-title" id="exampleModalLabel4">Booking</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form action="" method="post">
+                                                        <form method="POST">
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="timeslot" class="form-label">Date</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                            <input type="text" name="date" id="date" class="form-control" value="" />
+                                                                            <input type="text" name="date" id="date" class="form-control" value="" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="timeslot" class="form-label">Time</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="" />
+                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="title" class="form-label">title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
-                                                                            <input type="text" name="title" id="title" class="form-control" value="<?php echo isset($_GET['title']) ? htmlspecialchars($_GET['title']) : ''; ?>" />
+                                                                            <input type="text" name="title" id="title" class="form-control" value="<?php echo isset($_GET['title']) ? htmlspecialchars($_GET['title']) : ''; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="name" class="form-label">FullName</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="Nest Pingyos" />
+                                                                            <input type="text" name="name" id="name" class="form-control" value="Nest Pingyos" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="Phatcharapon.p@cmu.ac.th" />
+                                                                            <input type="text" name="email" id="email" class="form-control" value="Phatcharapon.p@cmu.ac.th" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
@@ -146,18 +146,19 @@
                                                                         <label for="tel" class="form-label">Meeting Option</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                            <select class="form-select" name="meeting" id="meeting" aria-label="Default select example">
-                                                                                <option selected>Meeting Option</option>
+                                                                            <select class="form-select" name="meeting" required id="meeting" aria-label="Default select example">
+                                                                                <option value="" disabled selected>Choose an option</option>
                                                                                 <option value="Zoom meeting">Zoom meeting</option>
                                                                                 <option value="Face to face meeting">Face to face meeting</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
+
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2"></textarea>
+                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -166,17 +167,10 @@
                                                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                                                     Close
                                                                 </button>
-                                                                <button type="bubmit" class="btn btn-primary">Save changes</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
                                                             </div>
                                                         </form>
-                                                        <?php
-                                                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                            // require_once 'bookingtime_t1_db.php';
-                                                            echo '<pre>';
-                                                            print_r($_POST);
-                                                            echo '</pre>';
-                                                        }
-                                                        ?>
+
                                                     </div>
                                                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery library -->
                                                     <script>
@@ -194,6 +188,14 @@
                                                     </script>
                                                 </div>
                                             </div>
+                                            <?php
+                                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                require_once 'bookingtime_t1_db.php';
+                                                echo '<pre>';
+                                                print_r($_POST);
+                                                echo '</pre>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>

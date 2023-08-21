@@ -19,25 +19,12 @@ if (
     $meeting = $_POST['meeting'];
     $manutitle = $_POST['manutitle'];
 
-    // SQL insert
-    $stmt = $conn->prepare("INSERT INTO booking_t1 (date, timeslot, title, name, tel, meeting, manutitle)
-    VALUES (:date, :timeslot, :title, :name, :tel, :meeting, :manutitle)");
+    $stmt = $mysqli->prepare("INSERT INTO booking_t1 (date, timeslot, title, name, email, tel, meeting, manutitle)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt->bindParam(':date', $date, PDO::PARAM_STR);
-    $stmt->bindParam(':timeslot', $timeslot, PDO::PARAM_STR);
-    $stmt->bindParam(':title', $title, PDO::PARAM_STR);
-    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-    $stmt->bindParam(':tel', $tel, PDO::PARAM_STR);
-    $stmt->bindParam(':meeting', $meeting, PDO::PARAM_STR);
-    $stmt->bindParam(':manutitle', $manutitle, PDO::PARAM_STR);
+    $stmt->bind_param('ssssssss', $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
 
-    $result = $stmt->execute();
-    $stmt = $conn->prepare("SELECT id FROM booking_t1 WHERE date = :date");
-    $stmt->bindParam(':date', $date, PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $id = $result['id'];
-    if ($result) {
+    if ($stmt->execute()) {
         echo '
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
@@ -50,7 +37,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-            window.location = "Date-University-View.php?university_id=' . $id . '";
+            window.location = "bookingtime_t1.php";
         });
       </script>';
     } else {
@@ -62,7 +49,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-          window.location.href = "Date-University-View.php";
+          window.location.href = "bookingtime_t1.php";
         });
       </script>';
     }
