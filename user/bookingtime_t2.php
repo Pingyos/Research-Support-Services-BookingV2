@@ -23,7 +23,7 @@
                                                 if (isset($_GET['date'])) {
                                                     $title = $_GET['title'];
                                                     $date = $_GET['date'];
-                                                    $stmt = $mysqli->prepare("select * from booking_t1 where date = ?");
+                                                    $stmt = $mysqli->prepare("select * from booking_t2 where date = ?");
                                                     $stmt->bind_param('s', $date);
                                                     $bookings = array();
                                                     if ($stmt->execute()) {
@@ -39,32 +39,20 @@
                                                 }
                                                 $duration = 60;
                                                 $cleanup = 0;
-                                                $start1 = "09:00";
-                                                $end1 = "12:00";
-                                                $start2 = "13:00";
-                                                $end2 = "16:00";
+                                                $start = "13:00";
+                                                $end = "16:00";
 
-                                                function timeslots($duration, $cleanup, $start1, $end1, $start2, $end2)
+                                                function timeslots($duration, $cleanup, $start, $end)
                                                 {
-                                                    $start1 = new DateTime("$start1");
-                                                    $end1 = new DateTime("$end1");
-                                                    $start2 = new DateTime("$start2");
-                                                    $end2 = new DateTime("$end2");
+                                                    $start = new DateTime("$start");
+                                                    $end = new DateTime("$end");
                                                     $interval = new DateInterval("PT" . $duration . "M");
                                                     $cleanupInterval = new DateInterval("PT" . $cleanup . "M");
                                                     $slots = array();
-                                                    for ($intStart = $start1; $intStart < $end1; $intStart->add($interval)->add($cleanupInterval)) {
+                                                    for ($intStart = $start; $intStart < $end; $intStart->add($interval)->add($cleanupInterval)) {
                                                         $endPeriod = clone $intStart;
                                                         $endPeriod->add($interval);
-                                                        if ($endPeriod > $end1) {
-                                                            break;
-                                                        }
-                                                        $slots[] = $intStart->format("H:iA") . "_" . $endPeriod->format("H:iA");
-                                                    }
-                                                    for ($intStart = $start2; $intStart < $end2; $intStart->add($interval)->add($cleanupInterval)) {
-                                                        $endPeriod = clone $intStart;
-                                                        $endPeriod->add($interval);
-                                                        if ($endPeriod > $end2) {
+                                                        if ($endPeriod > $end) {
                                                             break;
                                                         }
                                                         $slots[] = $intStart->format("H:iA") . "_" . $endPeriod->format("H:iA");
@@ -76,7 +64,7 @@
                                                     <div class="col-md-12 col-12 mt-2">
                                                         <?php echo isset($msg) ? $msg : ""; ?>
                                                     </div>
-                                                    <?php $timeslots = timeslots($duration, $cleanup, $start1, $end1, $start2, $end2);
+                                                    <?php $timeslots = timeslots($duration, $cleanup, $start, $end,);
                                                     foreach ($timeslots as $ts) {
                                                     ?>
                                                         <div class="col-md-2 col-12 mt-2">
@@ -190,7 +178,7 @@
                                             </div>
                                             <?php
                                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                require_once 'bookingtime_t1_db.php';
+                                                require_once 'bookingtime_t2_db.php';
                                                 echo '<pre>';
                                                 print_r($_POST);
                                                 echo '</pre>';
@@ -208,17 +196,17 @@
             </div>
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
-        <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
-        <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="../assets/vendor/libs/popper/popper.js"></script>
+        <script src="../assets/vendor/js/bootstrap.js"></script>
+        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-        <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
+        <script src="../assets/vendor/js/menu.js"></script>
+        <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-        <script src="assets/js/main.js"></script>
+        <script src="../assets/js/main.js"></script>
 
-        <script src="assets/js/dashboards-analytics.js"></script>
+        <script src="../assets/js/dashboards-analytics.js"></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>

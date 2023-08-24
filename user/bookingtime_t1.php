@@ -39,20 +39,32 @@
                                                 }
                                                 $duration = 60;
                                                 $cleanup = 0;
-                                                $start = "13:00";
-                                                $end = "16:00";
+                                                $start1 = "09:00";
+                                                $end1 = "12:00";
+                                                $start2 = "13:00";
+                                                $end2 = "16:00";
 
-                                                function timeslots($duration, $cleanup, $start, $end)
+                                                function timeslots($duration, $cleanup, $start1, $end1, $start2, $end2)
                                                 {
-                                                    $start = new DateTime("$start");
-                                                    $end = new DateTime("$end");
+                                                    $start1 = new DateTime("$start1");
+                                                    $end1 = new DateTime("$end1");
+                                                    $start2 = new DateTime("$start2");
+                                                    $end2 = new DateTime("$end2");
                                                     $interval = new DateInterval("PT" . $duration . "M");
                                                     $cleanupInterval = new DateInterval("PT" . $cleanup . "M");
                                                     $slots = array();
-                                                    for ($intStart = $start; $intStart < $end; $intStart->add($interval)->add($cleanupInterval)) {
+                                                    for ($intStart = $start1; $intStart < $end1; $intStart->add($interval)->add($cleanupInterval)) {
                                                         $endPeriod = clone $intStart;
                                                         $endPeriod->add($interval);
-                                                        if ($endPeriod > $end) {
+                                                        if ($endPeriod > $end1) {
+                                                            break;
+                                                        }
+                                                        $slots[] = $intStart->format("H:iA") . "_" . $endPeriod->format("H:iA");
+                                                    }
+                                                    for ($intStart = $start2; $intStart < $end2; $intStart->add($interval)->add($cleanupInterval)) {
+                                                        $endPeriod = clone $intStart;
+                                                        $endPeriod->add($interval);
+                                                        if ($endPeriod > $end2) {
                                                             break;
                                                         }
                                                         $slots[] = $intStart->format("H:iA") . "_" . $endPeriod->format("H:iA");
@@ -64,13 +76,13 @@
                                                     <div class="col-md-12 col-12 mt-2">
                                                         <?php echo isset($msg) ? $msg : ""; ?>
                                                     </div>
-                                                    <?php $timeslots = timeslots($duration, $cleanup, $start, $end,);
+                                                    <?php $timeslots = timeslots($duration, $cleanup, $start1, $end1, $start2, $end2);
                                                     foreach ($timeslots as $ts) {
                                                     ?>
                                                         <div class="col-md-2 col-12 mt-2">
                                                             <div class="form-group"></div>
                                                             <?php if (in_array($ts, $bookings)) { ?>
-                                                                <button class="col-md- col-12 mt-2 btn btn-xs btn-primary keypad3"><?php echo $ts; ?></button><br>
+                                                                <button class="col-md-12  col-12 btn btn-secondary"><?php echo $ts; ?></button><br>
                                                             <?php } else { ?>
                                                                 <button class="col-md-12 col-12 btn btn-primary book" data-bs-toggle="modal" data-bs-target="#exLargeModal" data-timeslot="<?php echo $ts; ?>"><?php echo $ts; ?></button>
                                                             <?php } ?>
@@ -196,17 +208,17 @@
             </div>
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
-        <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
-        <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="../assets/vendor/libs/popper/popper.js"></script>
+        <script src="../assets/vendor/js/bootstrap.js"></script>
+        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-        <script src="assets/vendor/js/menu.js"></script>
-        <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
+        <script src="../assets/vendor/js/menu.js"></script>
+        <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-        <script src="assets/js/main.js"></script>
+        <script src="../assets/js/main.js"></script>
 
-        <script src="assets/js/dashboards-analytics.js"></script>
+        <script src="../assets/js/dashboards-analytics.js"></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>

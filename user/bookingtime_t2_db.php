@@ -19,12 +19,20 @@ if (
     $meeting = $_POST['meeting'];
     $manutitle = $_POST['manutitle'];
 
-    $stmt = $mysqli->prepare("INSERT INTO booking_t1 (date, timeslot, title, name, email, tel, meeting, manutitle)
+    // Insert data into booking_t2 table
+    $stmt_t2 = $mysqli->prepare("INSERT INTO booking_t2 (date, timeslot, title, name, email, tel, meeting, manutitle)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt->bind_param('ssssssss', $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
+    $stmt_t2->bind_param('ssssssss', $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
 
-    if ($stmt->execute()) {
+    // Insert data into bookingall table
+    $stmt_all = $mysqli->prepare("INSERT INTO booking (date, timeslot, title, name, email, tel, meeting, manutitle)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+    $stmt_all->bind_param('ssssssss', $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
+
+    // Execute both statements
+    if ($stmt_t2->execute() && $stmt_all->execute()) {
         echo '
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
@@ -37,7 +45,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-            window.location = "bookingtime_t1.php?date=' . $date . '&title=' . $title . '";
+            window.location = "bookingtime_t2.php?date=' . $date . '&title=' . $title . '";
         });
       </script>';
     } else {
@@ -49,9 +57,9 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-          window.location.href = "bookingtime_t1.php";
+          window.location.href = "bookingtime_t2.php";
         });
       </script>';
     }
-    $conn = null;
+    $mysqli->close();
 }

@@ -139,25 +139,29 @@
                                                         $dayname = strtolower(date('l', strtotime($date)));
                                                         $eventNum = 0;
                                                         $today = $date == date('Y-m-d') ? "today" : "";
+
+                                                        $todayStyle = $today ? "background-color: #dee0e6;" : "";
+
                                                         if ($dayname == 'monday' || $dayname == 'thursday' || $dayname == 'saturday' || $dayname == 'sunday') {
-                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
+                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
                                                         } elseif ($date < date('Y-m-d')) {
-                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
+                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
                                                         } else {
                                                             $totalbookings = checkSlots($mysqli, $date);
                                                             if ($totalbookings == 3) {
-                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
+                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
                                                             } else {
                                                                 $availableslots = 3 - $totalbookings;
                                                                 $titleParam = isset($_GET['title']) ? "&title=" . urlencode($_GET['title']) : "";
                                                                 $bookingLink = "bookingtime_t2.php?date=" . $date . $titleParam;
-                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Booking</a>";
+                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Booking</a>";
                                                             }
                                                         }
                                                         $calendar .= "</td>";
                                                         $currentDay++;
                                                         $dayOfWeek++;
                                                     }
+
                                                     if ($dayOfWeek != 7) {
                                                         $remainingDays = 7 - $dayOfWeek;
                                                         for ($l = 0; $l < $remainingDays; $l++) {
@@ -173,7 +177,7 @@
 
                                                 function checkSlots($mysqli, $date)
                                                 {
-                                                    $stmt = $mysqli->prepare("select * from booking_t1 where date = ?");
+                                                    $stmt = $mysqli->prepare("select * from booking_t2 where date = ?");
                                                     $stmt->bind_param('s', $date);
                                                     $totalbookings = 0;
                                                     if ($stmt->execute()) {
@@ -206,22 +210,22 @@
 
         <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->
-        <script src="assets/vendor/libs/jquery/jquery.js"></script>
-        <script src="assets/vendor/libs/popper/popper.js"></script>
-        <script src="assets/vendor/js/bootstrap.js"></script>
-        <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="../assets/vendor/libs/popper/popper.js"></script>
+        <script src="../assets/vendor/js/bootstrap.js"></script>
+        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-        <script src="assets/vendor/js/menu.js"></script>
+        <script src="../assets/vendor/js/menu.js"></script>
         <!-- endbuild -->
 
         <!-- Vendors JS -->
-        <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
+        <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
         <!-- Main JS -->
-        <script src="assets/js/main.js"></script>
+        <script src="../assets/js/main.js"></script>
 
         <!-- Page JS -->
-        <script src="assets/js/dashboards-analytics.js"></script>
+        <script src="../assets/js/dashboards-analytics.js"></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
