@@ -45,7 +45,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-            window.location = "bookingtime_t2.php?date=' . $date . '&title=' . $title . '";
+            window.location = "viewdata.php";
         });
       </script>';
     } else {
@@ -57,7 +57,7 @@ if (
           timer: 1500,
           showConfirmButton: false
         }, function(){
-          window.location.href = "bookingtime_t2.php";
+          window.location.href = "viewdata.php";
         });
       </script>';
     }
