@@ -34,7 +34,7 @@
                                                                     <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
                                                                     <p class="card-text"><?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?></p>
-                                                                    <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Go somewhere</a>
+                                                                    <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                                 </div>
                                                             </div>
                                                         </div>
