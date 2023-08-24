@@ -29,7 +29,7 @@
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-12">
                       <div class="card-body">
-                        <a href="?title=Editor English Hours" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
+                        <a href="calendar_t2.php?title=Research Consult" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
                       </div>
                     </div>
                   </div>
@@ -40,7 +40,7 @@
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-12">
                       <div class="card-body">
-                        <a href="?title=Editor English Hours" class="btn btn-secondary col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
+                        <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-secondary col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
                       </div>
                     </div>
                   </div>

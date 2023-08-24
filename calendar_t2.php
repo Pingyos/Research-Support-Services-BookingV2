@@ -139,29 +139,25 @@
                                                         $dayname = strtolower(date('l', strtotime($date)));
                                                         $eventNum = 0;
                                                         $today = $date == date('Y-m-d') ? "today" : "";
-
-                                                        $todayStyle = $today ? "background-color: #dee0e6;" : "";
-
-                                                        if ($dayname == 'sunday' || $dayname == 'monday' || $dayname == 'tuesday'  || $dayname == 'friday' || $dayname == 'saturday') {
-                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
+                                                        if ($dayname == 'monday' || $dayname == 'thursday' || $dayname == 'saturday' || $dayname == 'sunday') {
+                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
                                                         } elseif ($date < date('Y-m-d')) {
-                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
+                                                            $calendar .= "<td><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
                                                         } else {
                                                             $totalbookings = checkSlots($mysqli, $date);
-                                                            if ($totalbookings == 6) {
-                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
+                                                            if ($totalbookings == 3) {
+                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
                                                             } else {
-                                                                $availableslots = 6 - $totalbookings;
+                                                                $availableslots = 3 - $totalbookings;
                                                                 $titleParam = isset($_GET['title']) ? "&title=" . urlencode($_GET['title']) : "";
-                                                                $bookingLink = "bookingtime_t1.php?date=" . $date . $titleParam;
-                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Booking</a>";
+                                                                $bookingLink = "bookingtime_t2.php?date=" . $date . $titleParam;
+                                                                $calendar .= "<td class='$today'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Booking</a>";
                                                             }
                                                         }
                                                         $calendar .= "</td>";
                                                         $currentDay++;
                                                         $dayOfWeek++;
                                                     }
-
                                                     if ($dayOfWeek != 7) {
                                                         $remainingDays = 7 - $dayOfWeek;
                                                         for ($l = 0; $l < $remainingDays; $l++) {
