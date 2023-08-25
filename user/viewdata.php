@@ -21,20 +21,33 @@
                                                 <div class="row">
                                                     <?php
                                                     require_once 'connect.php';
-                                                    $stmt = $mysqli->prepare("SELECT * FROM booking");
+                                                    $stmt = $mysqli->prepare("SELECT * FROM booking ORDER BY id DESC");
                                                     $stmt->execute();
                                                     $result = $stmt->get_result();
 
                                                     foreach ($result as $t1) {
                                                         $title = $t1['title'];
+
+
+                                                        $bgColor = '';
+                                                        if ($t1['status_user'] == 0) {
+                                                            $bgColor = '#f5f5f5'; // สีเทา
+                                                        } else if ($t1['status_user'] == 1) {
+                                                            $bgColor = '#d0f8ce'; // สีเขียวอ่อน
+                                                        } else if ($t1['status_user'] == 2) {
+                                                            $bgColor = '#fbe9e7'; // สีส้มอ่อน
+                                                        }
+
                                                     ?>
                                                         <div class="col-md-6 col-lg-4 mb-3">
-                                                            <div class="card h-100">
+                                                            <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                                 <div class="card-body">
+                                                                    <p class="card-text">Booking id <?= $t1['id']; ?></p>
                                                                     <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
                                                                     <p class="card-text"><?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?></p>
-                                                                    <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                    <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                    <a class="btn btn-outline-danger" <?= $t1['id']; ?>">Cancel</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -71,19 +84,38 @@
                                                                                 </div>
                                                                                 <hr>
                                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                                    <label for="timeslot" class="form-label"><?= $t1['meeting']; ?></label>
+                                                                                    <label for="status_user" class="form-label">Status</label>
                                                                                     <div class="input-group input-group-merge">
-                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-broadcast"></i></span>
-                                                                                        <input type="text" name="date" id="date" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-info-circle"></i></span>
+                                                                                        <?php
+                                                                                        $status = '';
+                                                                                        if ($t1['status_user'] == 0) {
+                                                                                            $status = '...';
+                                                                                        } else if ($t1['status_user'] == 1) {
+                                                                                            $status = 'Confirmed';
+                                                                                        } else if ($t1['status_user'] == 2) {
+                                                                                            $status = 'Cancel';
+                                                                                        }
+                                                                                        ?>
+                                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="<?= $status; ?>" readonly />
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                                    <label for="timeslot" class="form-label">Time</label>
-                                                                                    <div class="input-group input-group-merge">
-                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                                        <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
-                                                                                    </div>
+                                                                                    <?php if (!empty($t1['service'])) : ?>
+                                                                                        <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
+                                                                                        <input type="text" name="service" id="service" class="form-control" value="<?= $t1['service']; ?>" readonly />
+                                                                                    <?php endif; ?>
                                                                                 </div>
+                                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                                    <?php if (!empty($t1['note'])) : ?>
+                                                                                        <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                                        <div class="input-group input-group-merge">
+                                                                                            <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['note']; ?></textarea>
+                                                                                        </div>
+                                                                                    <?php endif; ?>
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                     </form>
