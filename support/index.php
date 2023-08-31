@@ -105,7 +105,7 @@
                                                                             <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
@@ -131,7 +131,7 @@
                                                                             <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2 note-section" style="display: none;">
+                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2 note-section" style="display: none;">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-comment"></i></span>
