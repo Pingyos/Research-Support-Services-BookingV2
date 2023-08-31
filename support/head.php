@@ -37,5 +37,6 @@
 
     <link href='../fullcalendar/packages/core/main.css' rel='stylesheet' />
     <link href='../fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
