@@ -44,10 +44,9 @@
                                                         <div class="card-body">
                                                             <p class="card-text">Booking id <?= $t1['id']; ?></p>
                                                             <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
-                                                            <p class="card-text"><?= $t1['name']; ?></p>
-                                                            <p class="card-text"><?= $t1['title']; ?> / <?= $t1['meeting']; ?></p>
-
-                                                            <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                            <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
+                                                            <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
+                                                            <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -118,8 +117,8 @@
                                                                         <label for="status_user" class="form-label">Status</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                            <select class="form-select status-user-select">
-                                                                                <option>Select</option>
+                                                                            <select id="status_user" name="status_user" class="form-select status-user-select">
+                                                                                <option><?= $t1['status_user']; ?></option>
                                                                                 <option value="1">Confirmed</option>
                                                                                 <option value="2">Cancel</option>
                                                                             </select>
@@ -129,14 +128,14 @@
                                                                         <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                                                            <input type="text" name="service" class="form-control" value="" />
+                                                                            <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2 note-section" style="display: none;">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea name="note" class="form-control" placeholder="Hi"></textarea>
+                                                                            <textarea name="note" class="form-control" placeholder="Hi"><?= $t1['note']; ?></textarea>
                                                                         </div>
                                                                     </div>
                                                                     <script>
@@ -145,25 +144,50 @@
                                                                             var statusUserSelect = modalContainer.querySelector('.status-user-select');
                                                                             var serviceSection = modalContainer.querySelector('.service-section');
                                                                             var noteSection = modalContainer.querySelector('.note-section');
+                                                                            var serviceInput = serviceSection.querySelector('input[name="service"]');
 
                                                                             // ซ่อนส่วนเริ่มต้นเมื่อหน้าต่างโมดัลถูกโหลด
                                                                             serviceSection.style.display = 'none';
                                                                             noteSection.style.display = 'none';
+                                                                            serviceInput.removeAttribute('required');
 
                                                                             statusUserSelect.addEventListener('change', function() {
                                                                                 if (statusUserSelect.value === '1') {
                                                                                     serviceSection.style.display = 'block';
                                                                                     noteSection.style.display = 'block';
+                                                                                    serviceInput.setAttribute('required', 'required');
                                                                                 } else if (statusUserSelect.value === '2') {
                                                                                     serviceSection.style.display = 'none';
                                                                                     noteSection.style.display = 'block';
+                                                                                    serviceInput.removeAttribute('required');
+                                                                                    serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
                                                                                 } else {
                                                                                     serviceSection.style.display = 'none';
                                                                                     noteSection.style.display = 'none';
+                                                                                    serviceInput.removeAttribute('required');
                                                                                 }
                                                                             });
+
+                                                                            // เรียกฟังก์ชันเช็คเงื่อนไขเริ่มต้นเมื่อหน้าเว็บโหลดเสร็จ
+                                                                            checkInitialConditions();
+
+                                                                            // ฟังก์ชันเช็คเงื่อนไขเริ่มต้น
+                                                                            function checkInitialConditions() {
+                                                                                if (statusUserSelect.value === '1') {
+                                                                                    serviceSection.style.display = 'block';
+                                                                                    noteSection.style.display = 'block';
+                                                                                    serviceInput.setAttribute('required', 'required');
+                                                                                } else if (statusUserSelect.value === '2') {
+                                                                                    serviceSection.style.display = 'none';
+                                                                                    noteSection.style.display = 'block';
+                                                                                    serviceInput.removeAttribute('required');
+                                                                                    serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
+                                                                                }
+                                                                            }
                                                                         });
                                                                     </script>
+                                                                    <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                                    <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -173,6 +197,14 @@
                                                                 <button type="submit" class="btn btn-primary">Save changes</button>
                                                             </div>
                                                         </form>
+                                                        <?php
+                                                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                            require_once 'index-db.php';
+                                                            echo '<pre>';
+                                                            print_r($_POST);
+                                                            echo '</pre>';
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </div>
                                             </div>

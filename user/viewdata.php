@@ -48,9 +48,9 @@
                                                                     <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
                                                                     <p class="card-text"><?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?></p>
-                                                                    <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                    <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                                     <?php if ($canCancel) : ?>
-                                                                        <a class="btn btn-outline-danger" href="javascript:void(0);" onclick="confirmDelete(<?= $t1['id']; ?>)">Cancel</a>
+                                                                        <a class="btn btn-danger text-white" href="javascript:void(0);" onclick="confirmDelete(<?= $t1['id']; ?>)">Cancel</a>
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
