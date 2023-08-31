@@ -33,10 +33,12 @@
                                                         if ($t1['status_user'] == 0) {
                                                             $bgColor = '#f5f5f5'; // สีเทา
                                                         } else if ($t1['status_user'] == 1) {
-                                                            $bgColor = '#d0f8ce'; // สีเขียวอ่อน
+                                                            $bgColor = '#EAFAF1'; // สีเขียวอ่อน
                                                         } else if ($t1['status_user'] == 2) {
-                                                            $bgColor = '#fbe9e7'; // สีส้มอ่อน
+                                                            $bgColor = '#FBEEE6'; // สีส้มอ่อน
                                                         }
+                                                        $status_user = $t1['status_user'];
+                                                        $canCancel = $status_user != 1 && $status_user != 2;
 
                                                     ?>
                                                         <div class="col-md-6 col-lg-4 mb-3">
@@ -47,7 +49,9 @@
                                                                     <p class="card-text"><?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?></p>
                                                                     <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
-                                                                    <a class="btn btn-outline-danger" <?= $t1['id']; ?>">Cancel</a>
+                                                                    <?php if ($canCancel) : ?>
+                                                                        <a class="btn btn-outline-danger" href="javascript:void(0);" onclick="confirmDelete(<?= $t1['id']; ?>)">Cancel</a>
+                                                                    <?php endif; ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -139,7 +143,25 @@
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
 
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, cancel it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "delbooking.php?id=" + id;
+                    }
+                });
+            }
+        </script>
         <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->
         <script src="../assets/vendor/libs/jquery/jquery.js"></script>

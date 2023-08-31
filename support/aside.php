@@ -24,9 +24,9 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="viewdata.php" class="menu-link">
+            <a href="calendar.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-history"></i>
-                <div data-i18n="Tables">History</div>
+                <div data-i18n="Tables">calendar</div>
             </a>
         </li>
 
