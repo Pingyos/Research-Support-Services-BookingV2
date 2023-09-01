@@ -2,7 +2,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Research Support Services Booking</title>
 
     <meta name="description" content />
 
@@ -37,5 +37,5 @@
 
     <link href='../fullcalendar/packages/core/main.css' rel='stylesheet' />
     <link href='../fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
-    
+
 </head>
