@@ -65,14 +65,7 @@
                                                                     <form method="POST">
                                                                         <div class="modal-body">
                                                                             <div class="row">
-                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                                    <label for="date" class="form-label">Date</label>
-                                                                                    <div class="input-group input-group-merge">
-                                                                                        <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                                        <input type="text" name="date" id="date" class="form-control" value="${event.start}" readonly />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                             <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                                     <label for="timeslot" class="form-label">Time</label>
                                                                                     <div class="input-group input-group-merge">
                                                                                         <span class="input-group-text"><i class="bx bx-time"></i></span>
@@ -169,6 +162,7 @@
                 $event = array(
                     'id' => $row['id'],
                     'title' => $row['title'],
+                    'date' => $row['date'],
                     'timeslot' => $row['timeslot'],
                     'manutitle' => $row['manutitle'],
                     'name' => $row['name'],
@@ -178,7 +172,6 @@
                     'status_user' => $row['status_user'],
                     'service' => $row['service'],
                     'note' => $row['note'],
-                    'start' => $row['date'],
                 );
                 echo "calendar.addEvent(" . json_encode($event) . ");\n";
             }
