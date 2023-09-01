@@ -46,11 +46,35 @@
                                                                 <div class="card-body">
                                                                     <p class="card-text">Booking id <?= $t1['id']; ?></p>
                                                                     <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
-                                                                    <p class="card-text"><?= $t1['title']; ?></p>
-                                                                    <p class="card-text"><?= $t1['meeting']; ?></p>
+                                                                    <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
+                                                                    <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
                                                                     <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                                     <?php if ($canCancel) : ?>
-                                                                        <a class="btn btn-danger text-white" href="javascript:void(0);" onclick="confirmDelete(<?= $t1['id']; ?>)">Cancel</a>
+                                                                        <a class="btn btn-danger text-white" href="javascript:void(0);" onclick="confirmDelete('<?= $t1['booking_id']; ?>')">Cancel</a>
+                                                                        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+                                                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+                                                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+
+                                                                        <script>
+                                                                            function confirmDelete(bookingId) {
+                                                                                swal({
+                                                                                        title: "Are you sure?",
+                                                                                        text: "Once cancel , you will not be able to recover this booking!",
+                                                                                        type: "warning",
+                                                                                        showCancelButton: true,
+                                                                                        confirmButtonColor: "#DD6B55",
+                                                                                        confirmButtonText: "Yes, cancel it!",
+                                                                                        cancelButtonText: "Cancel",
+                                                                                        closeOnConfirm: false
+                                                                                    },
+                                                                                    function(isConfirm) {
+                                                                                        if (isConfirm) {
+                                                                                            window.location = "delbooking.php?booking_id=" + bookingId;
+                                                                                        }
+                                                                                    });
+                                                                            }
+                                                                        </script>
+
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
@@ -175,26 +199,6 @@
             </div>
             <div class="layout-overlay layout-menu-toggle"></div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            function confirmDelete(id) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, cancel it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "delbooking.php?id=" + id;
-                    }
-                });
-            }
-        </script>
         <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->
         <script src="../assets/vendor/libs/jquery/jquery.js"></script>

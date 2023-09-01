@@ -191,9 +191,9 @@
                                             <?php
                                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 require_once 'bookingtime_t1_db.php';
-                                                echo '<pre>';
-                                                print_r($_POST);
-                                                echo '</pre>';
+                                                // echo '<pre>';
+                                                // print_r($_POST);
+                                                // echo '</pre>';
                                             }
                                             ?>
                                         </div>

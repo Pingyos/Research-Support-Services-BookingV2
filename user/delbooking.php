@@ -14,26 +14,31 @@
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
                             <?php
-                            if (isset($_GET['id'])) {
-                                $cancel_id = $_GET['id'];
-
+                            if (isset($_GET['booking_id'])) {
+                                $cancel_id = $_GET['booking_id'];
                                 require_once 'connect.php';
-                                $delete_t1 = $mysqli->prepare("DELETE FROM booking_t1 WHERE log_id = ?");
-                                $delete_t1->bind_param('i', $cancel_id);
 
+                                $delete_t2 = $mysqli->prepare("DELETE FROM booking_t2 WHERE booking_id = ?");
+                                $delete_t2->bind_param('s', $cancel_id);
+                                $delete_t2_success = $delete_t2->execute();
+
+                                $delete_t1 = $mysqli->prepare("DELETE FROM booking_t1 WHERE booking_id = ?");
+                                $delete_t1->bind_param('s', $cancel_id);
                                 $delete_t1_success = $delete_t1->execute();
-                                $delete_all = $mysqli->prepare("DELETE FROM booking WHERE id = ?");
-                                $delete_all->bind_param('i', $cancel_id);
+
+                                $delete_all = $mysqli->prepare("DELETE FROM booking WHERE booking_id = ?");
+                                $delete_all->bind_param('s', $cancel_id);
                                 $delete_booking_success = $delete_all->execute();
-                                if ($delete_booking_success && $delete_t1_success) {
+
+                                if ($delete_booking_success && $delete_t1_success && $delete_t2_success) {
                                     echo '
-                                    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
-                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
+                                        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
                                     echo '<script>
                                             setTimeout(function() {
                                             swal({
-                                                title: "Del Data Success",
+                                                title: "Cancel Booking Success",
                                                 type: "success",
                                                 timer: 2000,
                                                 showConfirmButton: false
@@ -41,13 +46,13 @@
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
                                             }, 1000);
-                                            }, 1000);
+                                            }, 500);
                                         </script>';
                                 } else {
                                     echo '<script>
                                             setTimeout(function() {
                                             swal({
-                                                title: "Del Data Error",
+                                                title: "Cancel Booking Error",
                                                 type: "error",
                                                 timer: 2000,
                                                 showConfirmButton: false
@@ -55,13 +60,12 @@
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
                                             }, 1000);
-                                            }, 1000);
+                                            }, 500);
                                         </script>';
                                 }
                                 $mysqli->close();
                             }
                             ?>
-
                             <?php require_once 'footer.php'; ?>
                             <div class="content-backdrop fade"></div>
                         </div>

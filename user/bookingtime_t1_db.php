@@ -43,7 +43,7 @@ if (
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
     echo '<script>
         swal({
-          title: "Add Data Success",
+          title: "Booking Success",
           text: "University add success",
           type: "success",
           timer: 1500,
