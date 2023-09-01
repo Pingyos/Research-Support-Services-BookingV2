@@ -44,7 +44,7 @@
                                                         <div class="col-md-6 col-lg-4 mb-3">
                                                             <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                                 <div class="card-body">
-                                                                    <p class="card-text">Booking id <?= $t1['id']; ?></p>
+                                                                    <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
                                                                     <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
                                                                     <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>

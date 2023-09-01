@@ -87,6 +87,51 @@
                                                         </div>
                                                         <form method="POST">
                                                             <div class="modal-body">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <a id="offButton" class="btn btn-outline-dark" style="margin-left: auto;" href="javascript:void(0);" onclick="confirmDelete()">Off</a>
+                                                                    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+                                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+                                                                    <script>
+                                                                        function confirmDelete() {
+                                                                            swal({
+                                                                                title: "Are you sure?",
+                                                                                text: "Once cancel, you will not be able to recover this booking!",
+                                                                                type: "warning",
+                                                                                showCancelButton: true,
+                                                                                confirmButtonColor: "#DD6B55",
+                                                                                confirmButtonText: "Yes, cancel it!",
+                                                                                cancelButtonText: "Cancel",
+                                                                                closeOnConfirm: false
+                                                                            }, function(isConfirm) {
+                                                                                if (isConfirm) {
+                                                                                    var date = document.getElementById("date").value;
+                                                                                    var timeslot = document.getElementById("timeslot").value;
+                                                                                    var email = document.getElementById("email").value;
+                                                                                    $.ajax({
+                                                                                        type: "POST",
+                                                                                        url: "off_booking_t2.php",
+                                                                                        data: {
+                                                                                            date: date,
+                                                                                            timeslot: timeslot
+                                                                                        },
+                                                                                        success: function(response) {
+
+                                                                                            if (response === 'success') {
+                                                                                                swal("Cancelled!", "Your booking has been cancelled.", "success");
+                                                                                                setTimeout(function() {
+                                                                                                    location.reload();
+                                                                                                }, 1000);
+                                                                                            } else {
+                                                                                                swal("Error!", "An error occurred while cancelling your booking.", "error");
+                                                                                            }
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    </script>
+                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="timeslot" class="form-label">Date</label>
@@ -149,7 +194,7 @@
                                                                             <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
-                                                                    <input type="text" name="booking_id" value="<?php echo 'M-' . date('is') . '-' . (date('Y')); ?>" hidden>
+                                                                    <input type="text" name="booking_id" value="<?php echo 'P-' . date('is') . '-' . (date('Y')); ?>" hidden>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
