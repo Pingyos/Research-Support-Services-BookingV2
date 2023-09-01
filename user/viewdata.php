@@ -79,7 +79,35 @@
                                                                                         <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                                    <label for="title" class="form-label">title</label>
+                                                                                    <div class="input-group input-group-merge">
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
+                                                                                        <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                                    <label for="name" class="form-label">FullName</label>
+                                                                                    <div class="input-group input-group-merge">
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                                                                                        <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                                    <label for="email" class="form-label">Email</label>
+                                                                                    <div class="input-group input-group-merge">
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                                                                        <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                                    <label for="meeting" class="form-label">meeting</label>
+                                                                                    <div class="input-group input-group-merge">
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                                        <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12 col-md-12 col-12 mb-2">
                                                                                     <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                                     <div class="input-group input-group-merge">
                                                                                         <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
@@ -90,39 +118,44 @@
                                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                                     <label for="status_user" class="form-label">Status</label>
                                                                                     <div class="input-group input-group-merge">
-                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-info-circle"></i></span>
-                                                                                        <?php
-                                                                                        $status = '';
-                                                                                        if ($t1['status_user'] == 0) {
-                                                                                            $status = '...';
-                                                                                        } else if ($t1['status_user'] == 1) {
-                                                                                            $status = 'Confirmed';
-                                                                                        } else if ($t1['status_user'] == 2) {
-                                                                                            $status = 'Cancel';
-                                                                                        }
-                                                                                        ?>
-                                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="<?= $status; ?>" readonly />
+                                                                                        <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                                        <input type="text" name="status_user" class="form-control" value="<?= $t1['status_user']; ?>" readonly />
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                                    <?php if (!empty($t1['service'])) : ?>
+                                                                                <?php if (!empty($t1['service'])) : ?>
+                                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2 service-section">
                                                                                         <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
-                                                                                        <input type="text" name="service" id="service" class="form-control" value="<?= $t1['service']; ?>" readonly />
-                                                                                    <?php endif; ?>
-                                                                                </div>
-                                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                                    <?php if (!empty($t1['note'])) : ?>
+                                                                                        <div class="input-group input-group-merge">
+                                                                                            <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                                                                            <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" readonly />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <?php endif; ?>
+                                                                                <?php if (!empty($t1['note'])) : ?>
+                                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
                                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                                         <div class="input-group input-group-merge">
-                                                                                            <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['note']; ?></textarea>
+                                                                                            <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                                            <textarea name="note" class="form-control" placeholder="Hi" readonly><?= $t1['note']; ?></textarea>
                                                                                         </div>
-                                                                                    <?php endif; ?>
-                                                                                </div>
-
+                                                                                    </div>
+                                                                                <?php endif; ?>
                                                                             </div>
                                                                         </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                Close
+                                                                            </button>
+                                                                        </div>
                                                                     </form>
+                                                                    <?php
+                                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                                        // require_once 'index-db.php';
+                                                                        echo '<pre>';
+                                                                        print_r($_POST);
+                                                                        echo '</pre>';
+                                                                    }
+                                                                    ?>
                                                                 </div>
                                                             </div>
                                                         </div>
