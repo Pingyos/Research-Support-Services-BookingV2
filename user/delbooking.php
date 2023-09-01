@@ -18,26 +18,25 @@
                                 $cancel_id = $_GET['id'];
 
                                 require_once 'connect.php';
-
-                                // Delete from booking_t1
                                 $delete_t1 = $mysqli->prepare("DELETE FROM booking_t1 WHERE log_id = ?");
                                 $delete_t1->bind_param('i', $cancel_id);
 
-                                // Delete from booking
-                                $delete_all = $mysqli->prepare("DELETE FROM booking WHERE log_id = ?");
+                                $delete_t1_success = $delete_t1->execute();
+                                $delete_all = $mysqli->prepare("DELETE FROM booking WHERE id = ?");
                                 $delete_all->bind_param('i', $cancel_id);
-                                echo '
+                                $delete_booking_success = $delete_all->execute();
+                                if ($delete_booking_success && $delete_t1_success) {
+                                    echo '
                                     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
-                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
-                                if ($delete_t1->execute() && $delete_all->execute()) {
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
                                     echo '<script>
                                             setTimeout(function() {
                                             swal({
                                                 title: "Del Data Success",
                                                 type: "success",
-                                                timer: 2000, // 2000 milliseconds = 2 seconds
-                                                showConfirmButton: false // Hide the "OK" button
+                                                timer: 2000,
+                                                showConfirmButton: false
                                             });
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
@@ -50,8 +49,8 @@
                                             swal({
                                                 title: "Del Data Error",
                                                 type: "error",
-                                                timer: 2000, // 2000 milliseconds = 2 seconds
-                                                showConfirmButton: false // Hide the "OK" button
+                                                timer: 2000,
+                                                showConfirmButton: false
                                             });
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
@@ -59,9 +58,10 @@
                                             }, 1000);
                                         </script>';
                                 }
-                                $conn = null;
-                            } //isset
+                                $mysqli->close();
+                            }
                             ?>
+
                             <?php require_once 'footer.php'; ?>
                             <div class="content-backdrop fade"></div>
                         </div>

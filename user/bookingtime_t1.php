@@ -153,7 +153,6 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
@@ -161,6 +160,7 @@
                                                                             <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
+                                                                    <input type="text" name="booking_id" value="<?php echo 'M-' . date('is') . '-' . (date('Y')); ?>" hidden>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -172,7 +172,7 @@
                                                         </form>
 
                                                     </div>
-                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery library -->
+                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                                                     <script>
                                                         $(document).ready(function() {
                                                             $(".book").click(function() {

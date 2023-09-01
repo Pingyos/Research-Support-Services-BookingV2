@@ -149,6 +149,7 @@
                                                                             <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
+                                                                    <input type="text" name="booking_id" value="<?php echo 'M-' . date('is') . '-' . (date('Y')); ?>" hidden>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
