@@ -116,15 +116,18 @@
                                                                                             timeslot: timeslot
                                                                                         },
                                                                                         success: function(response) {
-
                                                                                             if (response === 'success') {
                                                                                                 swal("Cancelled!", "Your booking has been cancelled.", "success");
                                                                                                 setTimeout(function() {
                                                                                                     location.reload();
                                                                                                 }, 1000);
                                                                                             } else {
-                                                                                                swal("Error!", "An error occurred while cancelling your booking.", "error");
+                                                                                                displayErrorMessage("An error occurred while cancelling your booking. Please try again later.");
                                                                                             }
+                                                                                        },
+                                                                                        error: function(xhr, textStatus, errorThrown) {
+                                                                                            console.log(xhr);
+                                                                                            displayErrorMessage("An error occurred while cancelling your booking. Please try again later.");
                                                                                         }
                                                                                     });
                                                                                 }
