@@ -18,7 +18,7 @@
     <ul class="menu-inner py-1">
 
         <li class="menu-item">
-            <a href="index.php" class="menu-link">
+            <a href="booking_off.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-x"></i>
                 <div data-i18n="Analytics">Booking-off</div>
             </a>
