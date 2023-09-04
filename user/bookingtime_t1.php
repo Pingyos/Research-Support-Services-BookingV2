@@ -99,7 +99,7 @@
                                                         </div>
                                                         <form method="POST">
                                                             <div class="modal-body">
-                                                            <div style="display: flex; justify-content: space-between;">
+                                                                <div style="display: flex; justify-content: space-between;">
                                                                     <a id="offButton" class="btn btn-outline-dark" style="margin-left: auto;" href="javascript:void(0);" onclick="confirmDelete()">Off</a>
                                                                     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
                                                                     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
