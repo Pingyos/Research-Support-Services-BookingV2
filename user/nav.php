@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block"><?php echo $login_info['firstname_EN'] . "<br>"; ?></span>
+                                    <!-- <span class="fw-semibold d-block"><?php echo $login_info['firstname_EN'] . "<br>"; ?></span> -->
                                 </div>
                             </div>
                         </a>

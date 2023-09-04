@@ -26,7 +26,8 @@
         <li class="menu-item">
             <a href="viewdata.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-history"></i>
-                <div data-i18n="Tables">History</div>
+                <div data-i18n="Tables">History</div> &nbsp
+                <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span> -->
             </a>
         </li>
 

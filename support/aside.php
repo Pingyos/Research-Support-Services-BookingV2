@@ -19,13 +19,13 @@
 
         <li class="menu-item">
             <a href="index.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-bookmark-plus"></i>
-                <div data-i18n="Analytics">Booking</div>
+                <i class="menu-icon tf-icons bx bx-calendar-x"></i>
+                <div data-i18n="Analytics">Booking-off</div>
             </a>
         </li>
         <li class="menu-item">
             <a href="calendar.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-history"></i>
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="Tables">calendar</div>
             </a>
         </li>
