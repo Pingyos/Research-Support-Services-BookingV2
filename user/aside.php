@@ -16,18 +16,16 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-
         <li class="menu-item">
             <a href="index.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-bookmark-plus"></i>
-                <div data-i18n="Analytics">Booking</div>
+                <div data-i18n="">Booking</div>
             </a>
         </li>
         <li class="menu-item">
             <a href="viewdata.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-history"></i>
-                <div data-i18n="Tables">History</div> &nbsp
-                <!-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span> -->
+                <div data-i18n="">History</div>
             </a>
         </li>
 

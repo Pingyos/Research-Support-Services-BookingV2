@@ -1,3 +1,31 @@
+<?php
+session_start();
+if (!isset($_SESSION['login_info'])) {
+    header('Location: ../user/login.php');
+    exit;
+}
+
+require_once 'connect.php';
+
+$json = $_SESSION['login_info'];
+$email = $json['cmuitaccount'];
+$sql = "SELECT title FROM cmuitaccount WHERE cmuitaccount = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $title = $row['title'];
+
+    // echo "cmuitaccount: " . $json['cmuitaccount'] . "<br>";
+    // echo "title: " . $title . "<br>";
+} else {
+    // echo "Title not found in the database for this cmuitaccount.";
+}
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -19,14 +47,14 @@
                                         <div class="row">
                                             <?php
                                             require_once 'connect.php';
-                                            $stmt = $mysqli->prepare("SELECT * FROM booking ORDER BY id DESC");
+                                            $searchTitle = $row['title'];
+                                            $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ?");
+                                            $stmt->bind_param("s", $searchTitle);
                                             $stmt->execute();
                                             $result = $stmt->get_result();
 
                                             foreach ($result as $t1) {
                                                 $title = $t1['title'];
-
-
                                                 $bgColor = '';
                                                 if ($t1['status_user'] == 0) {
                                                     $bgColor = '#f5f5f5'; // สีเทา

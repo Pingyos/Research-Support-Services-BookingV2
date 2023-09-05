@@ -2,9 +2,9 @@
 
 <?php session_start();
 
-$client_id = 'YxEWYjWb7vrWZYajNb61aKQduEfnzSEyvrNw6tj7';      
-$client_secret = 'm9J9JvN86mq7440pTBBtdHPr02BHmQnv28QabRF9';  
-$redirect_uri = 'https://app.nurse.cmu.ac.th/edonation/edo_admin/login.php';
+$client_id = 'kJ4G50AGcH6kegNvpyWjXPERVHpH1mxWjs577Mrk';      
+$client_secret = 'gaNYS3AD8xZcyA5GdpYxM3R2kmaYnRxPgMcXbT81';  
+$redirect_uri = 'https://app.nurse.cmu.ac.th/booking/user/login.php';
 
 $oauth_scope = "cmuitaccount.basicinfo"; // Scopes with space-delimited
 $oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx";
@@ -69,11 +69,11 @@ if (isset($_GET['error']) != null) {
             session_start();
             $_SESSION['login_info'] = $json;
             // Show Result Text
-            echo "Name:" . $json['firstname_EN'] . "<br>";
-            echo "Surname:" . $json['lastname_EN'] . "<br>";
-            echo "organization:" . $json['organization_name_EN'] . "<br>";
-            echo "cmuitaccount:" . $json['cmuitaccount'] . "<br>";
-            echo "itaccounttype_TH:" . $json['itaccounttype_TH'] . "<br>";
+            // echo "Name:" . $json['firstname_EN'] . "<br>";
+            // echo "Surname:" . $json['lastname_EN'] . "<br>";
+            // echo "organization:" . $json['organization_name_EN'] . "<br>";
+            // echo "cmuitaccount:" . $json['cmuitaccount'] . "<br>";
+            // echo "itaccounttype_TH:" . $json['itaccounttype_TH'] . "<br>";
             header("Location: index.php");
             exit;
         }

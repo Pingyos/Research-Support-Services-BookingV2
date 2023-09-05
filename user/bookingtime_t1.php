@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION['login_info'])) {
+    header('Location: login.php');
+    exit;
+}
+if (isset($_SESSION['login_info'])) {
+    $json = $_SESSION['login_info'];
+} else {
+    echo "You are not logged in.";
+}
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -99,54 +111,6 @@
                                                         </div>
                                                         <form method="POST">
                                                             <div class="modal-body">
-                                                                <div style="display: flex; justify-content: space-between;">
-                                                                    <a id="offButton" class="btn btn-outline-dark" style="margin-left: auto;" href="javascript:void(0);" onclick="confirmDelete()">Off</a>
-                                                                    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
-                                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-                                                                    <script>
-                                                                        function confirmDelete() {
-                                                                            swal({
-                                                                                title: "Are you sure?",
-                                                                                text: "Once cancel, you will not be able to recover this booking!",
-                                                                                type: "warning",
-                                                                                showCancelButton: true,
-                                                                                confirmButtonColor: "#DD6B55",
-                                                                                confirmButtonText: "Yes, cancel it!",
-                                                                                cancelButtonText: "Cancel",
-                                                                                closeOnConfirm: false
-                                                                            }, function(isConfirm) {
-                                                                                if (isConfirm) {
-                                                                                    var date = document.getElementById("date").value;
-                                                                                    var timeslot = document.getElementById("timeslot").value;
-                                                                                    var email = document.getElementById("email").value;
-                                                                                    $.ajax({
-                                                                                        type: "POST",
-                                                                                        url: "off_booking_t1.php",
-                                                                                        data: {
-                                                                                            date: date,
-                                                                                            timeslot: timeslot
-                                                                                        },
-                                                                                        success: function(response) {
-                                                                                            if (response === 'success') {
-                                                                                                swal("Cancelled!", "Your booking has been cancelled.", "success");
-                                                                                                setTimeout(function() {
-                                                                                                    location.reload();
-                                                                                                }, 1000);
-                                                                                            } else {
-                                                                                                displayErrorMessage("An error occurred while cancelling your booking. Please try again later.");
-                                                                                            }
-                                                                                        },
-                                                                                        error: function(xhr, textStatus, errorThrown) {
-                                                                                            console.log(xhr);
-                                                                                            displayErrorMessage("An error occurred while cancelling your booking. Please try again later.");
-                                                                                        }
-                                                                                    });
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    </script>
-                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="timeslot" class="form-label">Date</label>
@@ -173,21 +137,21 @@
                                                                         <label for="name" class="form-label">FullName</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="Nest Pingyos" readonly />
+                                                                            <input type="text" name="name" id="name" class="form-control" value="<?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="Phatcharapon.p@cmu.ac.th" readonly />
+                                                                            <input type="text" name="email" id="email" class="form-control" value="<?php echo $json['cmuitaccount']; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="tel" class="form-label">Tel</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="0987654321" />
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">

@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION['login_info'])) {
+    header('Location: ../user/login.php');
+    exit;
+}
+if (isset($_SESSION['login_info'])) {
+    $json = $_SESSION['login_info'];
+} else {
+    echo "You are not logged in.";
+}
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -18,7 +30,7 @@
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours (Mr. Michael Cote)</a>
+                                                <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-dark col-12">Editor English Hours (Mr. Michael Cote)</a>
                                             </div>
                                         </div>
                                     </div>
@@ -29,7 +41,7 @@
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t2.php?title=Research Consult" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
+                                                <a href="calendar_t2.php?title=Research Consult" class="btn btn-dark col-12">Research Consult (Dr.Patompong Khaw-on)</a>
                                             </div>
                                         </div>
                                     </div>
@@ -40,7 +52,7 @@
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-secondary col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
+                                                <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-dark col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
                                             </div>
                                         </div>
                                     </div>

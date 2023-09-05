@@ -16,17 +16,22 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-
+        <li class="menu-item">
+            <a href="index.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-bookmark-plus"></i>
+                <div data-i18n="Analytics">Booking</div>
+            </a>
+        </li>
         <li class="menu-item">
             <a href="booking_off.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-x"></i>
-                <div data-i18n="Analytics">Booking-off</div>
+                <div data-i18n="">Booking-off</div>
             </a>
         </li>
         <li class="menu-item">
             <a href="calendar.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
-                <div data-i18n="Tables">calendar</div>
+                <div data-i18n="">calendar</div>
             </a>
         </li>
 
