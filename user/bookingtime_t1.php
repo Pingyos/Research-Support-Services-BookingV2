@@ -173,6 +173,9 @@
                                                                         </div>
                                                                     </div>
                                                                     <input type="text" name="booking_id" value="<?php echo 'M-' . date('is') . '-' . (date('Y')); ?>" hidden>
+                                                                    <input type="text" name="status_user" value="0" hidden>
+                                                                    <input type="text" name="service" value="" hidden>
+                                                                    <input type="text" name="note" value="" hidden>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

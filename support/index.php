@@ -63,7 +63,6 @@
                                             // $searchTitle3 = $row['title3'];
 
                                             $stmt = $mysqli->prepare("SELECT * FROM booking ");
-                                 
                                             $stmt->execute();
                                             $result = $stmt->get_result();
 
@@ -91,7 +90,13 @@
                                                             </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
                                                             <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
-                                                            <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                            <div class="d-flex justify-content-between">
+                                                                <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                <p class="card-text" style="font-size: 13px;">
+                                                                    Date: <?= date('Y-m-d', strtotime($t1['dateCreate'])); ?><br>
+                                                                    Time: <?= date('H:i:s', strtotime($t1['dateCreate'])); ?>
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

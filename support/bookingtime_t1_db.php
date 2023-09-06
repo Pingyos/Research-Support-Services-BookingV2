@@ -32,10 +32,6 @@ if (
     $stmt2 = $mysqli->prepare("INSERT INTO booking (date, timeslot, title, name, email, tel, meeting, manutitle, booking_id, status_user, service, note)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $status_user = 0;
-    $service = "";
-    $note = "";
-
     $stmt2->bind_param("ssssssssssss", $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle, $booking_id, $status_user, $service, $note);
     $stmt2->execute();
 
