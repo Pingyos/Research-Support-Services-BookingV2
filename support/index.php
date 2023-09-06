@@ -89,7 +89,7 @@
                                                                 <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> - <?= $t1['timeslot']; ?>
                                                             </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
-                                                            <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
+                                                            <p class="card-text"><b><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</b></p>
                                                             <div class="d-flex justify-content-between">
                                                                 <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                                 <p class="card-text" style="font-size: 13px;">
