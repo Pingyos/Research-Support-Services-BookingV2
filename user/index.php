@@ -1,32 +1,32 @@
 <?php
-session_start();
-if (!isset($_SESSION['login_info'])) {
-    header('Location: login.php');
-    exit;
-}
+// session_start();
+// if (!isset($_SESSION['login_info'])) {
+//     header('Location: login.php');
+//     exit;
+// }
 
-require_once 'connect.php';
+// require_once 'connect.php';
 
-if (isset($_SESSION['login_info'])) {
-    $json = $_SESSION['login_info'];
-    $cmuitaccount = $json['cmuitaccount'];
+// if (isset($_SESSION['login_info'])) {
+//     $json = $_SESSION['login_info'];
+//     $cmuitaccount = $json['cmuitaccount'];
 
-    // ทำการบันทึกลงในตาราง log_user ทุกครั้งที่ login
-    $insertStmt = $mysqli->prepare("INSERT INTO log_user (cmuitaccount, login_time) VALUES (?, NOW())");
-    $insertStmt->bind_param("s", $cmuitaccount);
-    $insertStmt->execute();
-    $insertStmt->close();
+//     // ทำการบันทึกลงในตาราง log_user ทุกครั้งที่ login
+//     $insertStmt = $mysqli->prepare("INSERT INTO log_user (cmuitaccount, login_time) VALUES (?, NOW())");
+//     $insertStmt->bind_param("s", $cmuitaccount);
+//     $insertStmt->execute();
+//     $insertStmt->close();
 
-    // เช็คว่ามีผู้ใช้ในตาราง cmuitaccount หรือไม่
-    $stmt = $mysqli->prepare("SELECT * FROM cmuitaccount WHERE cmuitaccount = ?");
-    $stmt->bind_param("s", $cmuitaccount);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        header("Location: https://app.nurse.cmu.ac.th/booking/support/index.php");
-        exit;
-    }
-}
+//     // เช็คว่ามีผู้ใช้ในตาราง cmuitaccount หรือไม่
+//     $stmt = $mysqli->prepare("SELECT * FROM cmuitaccount WHERE cmuitaccount = ?");
+//     $stmt->bind_param("s", $cmuitaccount);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     if ($result->num_rows > 0) {
+//         header("Location: https://app.nurse.cmu.ac.th/booking/support/index.php");
+//         exit;
+//     }
+// }
 ?>
 
 

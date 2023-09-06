@@ -1,39 +1,39 @@
 <?php
-session_start();
-if (!isset($_SESSION['login_info'])) {
-    header('Location: ../user/login.php');
-    exit;
-}
-require_once 'connect.php';
+// session_start();
+// if (!isset($_SESSION['login_info'])) {
+//     header('Location: ../user/login.php');
+//     exit;
+// }
+// require_once 'connect.php';
 
-$json = $_SESSION['login_info'];
-$email = $json['cmuitaccount'];
+// $json = $_SESSION['login_info'];
+// $email = $json['cmuitaccount'];
 
-$sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
-$stmt = $mysqli->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$count = $row['count'];
-if ($count === 0) {
-    header('Location: ../user/login.php');
-    exit;
-}
-$sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
-$stmt = $mysqli->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $title1 = $row['title1'];
-    $title2 = $row['title2'];
-    $title3 = $row['title3'];
-} else {
-    header('Location: ../user/login.php?error=user_not_found');
-    exit;
-}
+// $sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
+// $stmt = $mysqli->prepare($sql);
+// $stmt->bind_param("s", $email);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $row = $result->fetch_assoc();
+// $count = $row['count'];
+// if ($count === 0) {
+//     header('Location: ../user/login.php');
+//     exit;
+// }
+// $sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
+// $stmt = $mysqli->prepare($sql);
+// $stmt->bind_param("s", $email);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// if ($result->num_rows > 0) {
+//     $row = $result->fetch_assoc();
+//     $title1 = $row['title1'];
+//     $title2 = $row['title2'];
+//     $title3 = $row['title3'];
+// } else {
+//     header('Location: ../user/login.php?error=user_not_found');
+//     exit;
+// }
 ?>
 
 <!DOCTYPE html>
@@ -58,12 +58,12 @@ if ($result->num_rows > 0) {
                                             <?php
                                             require_once 'connect.php';
 
-                                            $searchTitle1 = $row['title1'];
-                                            $searchTitle2 = $row['title2'];
-                                            $searchTitle3 = $row['title3'];
+                                            // $searchTitle1 = $row['title1'];
+                                            // $searchTitle2 = $row['title2'];
+                                            // $searchTitle3 = $row['title3'];
 
-                                            $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY id DESC");
-                                            $stmt->bind_param("sss", $searchTitle1, $searchTitle2, $searchTitle3);
+                                            $stmt = $mysqli->prepare("SELECT * FROM booking ");
+                                 
                                             $stmt->execute();
                                             $result = $stmt->get_result();
 
