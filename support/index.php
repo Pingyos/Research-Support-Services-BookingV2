@@ -4,28 +4,38 @@ if (!isset($_SESSION['login_info'])) {
     header('Location: ../user/login.php');
     exit;
 }
-
 require_once 'connect.php';
 
 $json = $_SESSION['login_info'];
 $email = $json['cmuitaccount'];
-$sql = "SELECT title FROM cmuitaccount WHERE cmuitaccount = ?";
+
+$sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
-
+$row = $result->fetch_assoc();
+$count = $row['count'];
+if ($count === 0) {
+    header('Location: ../user/login.php');
+    exit;
+}
+$sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $title = $row['title'];
-
-    // echo "cmuitaccount: " . $json['cmuitaccount'] . "<br>";
-    // echo "title: " . $title . "<br>";
+    $title1 = $row['title1'];
+    $title2 = $row['title2'];
+    $title3 = $row['title3'];
 } else {
-    // echo "Title not found in the database for this cmuitaccount.";
+    header('Location: ../user/login.php?error=user_not_found');
+    exit;
 }
-
 ?>
+
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -47,11 +57,16 @@ if ($result->num_rows > 0) {
                                         <div class="row">
                                             <?php
                                             require_once 'connect.php';
-                                            $searchTitle = $row['title'];
-                                            $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ?");
-                                            $stmt->bind_param("s", $searchTitle);
+
+                                            $searchTitle1 = $row['title1'];
+                                            $searchTitle2 = $row['title2'];
+                                            $searchTitle3 = $row['title3'];
+
+                                            $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY id DESC");
+                                            $stmt->bind_param("sss", $searchTitle1, $searchTitle2, $searchTitle3);
                                             $stmt->execute();
                                             $result = $stmt->get_result();
+
 
                                             foreach ($result as $t1) {
                                                 $title = $t1['title'];
@@ -71,7 +86,9 @@ if ($result->num_rows > 0) {
                                                     <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                         <div class="card-body">
                                                             <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
-                                                            <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
+                                                            <h5 class="card-title">
+                                                                <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> - <?= $t1['timeslot']; ?>
+                                                            </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
                                                             <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
                                                             <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
@@ -106,7 +123,7 @@ if ($result->num_rows > 0) {
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="title" class="form-label">title</label>
+                                                                        <label for="title" class="form-label">Service</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
                                                                             <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
@@ -129,7 +146,7 @@ if ($result->num_rows > 0) {
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="meeting" class="form-label">meeting</label>
                                                                         <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
                                                                             <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
                                                                         </div>
                                                                     </div>
@@ -146,7 +163,20 @@ if ($result->num_rows > 0) {
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
                                                                             <select id="status_user" name="status_user" class="form-select status-user-select">
-                                                                                <option><?= $t1['status_user']; ?></option>
+                                                                                <option value="<?= $t1['status_user']; ?>">
+                                                                                    <?php
+                                                                                    if ($t1['status_user'] == "'") {
+                                                                                        echo "Pending";
+                                                                                    } elseif ($t1['status_user'] == 1) {
+                                                                                        echo "Confirmed";
+                                                                                    } elseif ($t1['status_user'] == 2) {
+                                                                                        echo "Cancel Booking";
+                                                                                    } else {
+                                                                                        // กรณีค่าไม่ตรงกับเงื่อนไขที่กำหนด
+                                                                                        echo "Pending";
+                                                                                    }
+                                                                                    ?>
+                                                                                </option>
                                                                                 <option value="1">Confirmed</option>
                                                                                 <option value="2">Cancel</option>
                                                                             </select>
@@ -163,7 +193,7 @@ if ($result->num_rows > 0) {
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea name="note" class="form-control" placeholder="Hi"><?= $t1['note']; ?></textarea>
+                                                                            <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
                                                                         </div>
                                                                     </div>
                                                                     <script>

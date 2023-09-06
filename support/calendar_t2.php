@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login_info'])) {
-    header('Location: ../user/login.php');
+    header('Location: login.php');
     exit;
 }
 if (isset($_SESSION['login_info'])) {
@@ -155,18 +155,18 @@ if (isset($_SESSION['login_info'])) {
                                                         $todayStyle = $today ? "background-color: #dee0e6;" : "";
 
                                                         if ($dayname == 'monday' || $dayname == 'thursday' || $dayname == 'saturday' || $dayname == 'sunday') {
-                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>N/A</button>";
+                                                            $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-secondary'>Unavailable</button>";
                                                         } elseif ($date < date('Y-m-d')) {
                                                             $calendar .= "<td style='$todayStyle'><h4>$currentDay</h4> <button class='col-12 btn btn-warning'>Pass</button>";
                                                         } else {
                                                             $totalbookings = checkSlots($mysqli, $date);
                                                             if ($totalbookings == 3) {
-                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Full</a>";
+                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4> <a href='#' class='btn btn-primary'>Booking Full</a>";
                                                             } else {
                                                                 $availableslots = 3 - $totalbookings;
                                                                 $titleParam = isset($_GET['title']) ? "&title=" . urlencode($_GET['title']) : "";
                                                                 $bookingLink = "bookingtime_t2.php?date=" . $date . $titleParam;
-                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Booking</a>";
+                                                                $calendar .= "<td class='$today' style='$todayStyle'><h4>$currentDay</h4><a> $availableslots slots</a><a href='$bookingLink' class='col-12 btn btn-success'>Available times</a>";
                                                             }
                                                         }
                                                         $calendar .= "</td>";

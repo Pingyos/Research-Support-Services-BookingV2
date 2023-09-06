@@ -10,6 +10,14 @@ require_once 'connect.php';
 if (isset($_SESSION['login_info'])) {
     $json = $_SESSION['login_info'];
     $cmuitaccount = $json['cmuitaccount'];
+
+    // ทำการบันทึกลงในตาราง log_user ทุกครั้งที่ login
+    $insertStmt = $mysqli->prepare("INSERT INTO log_user (cmuitaccount, login_time) VALUES (?, NOW())");
+    $insertStmt->bind_param("s", $cmuitaccount);
+    $insertStmt->execute();
+    $insertStmt->close();
+
+    // เช็คว่ามีผู้ใช้ในตาราง cmuitaccount หรือไม่
     $stmt = $mysqli->prepare("SELECT * FROM cmuitaccount WHERE cmuitaccount = ?");
     $stmt->bind_param("s", $cmuitaccount);
     $stmt->execute();
@@ -20,6 +28,7 @@ if (isset($_SESSION['login_info'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 
@@ -36,34 +45,50 @@ if (isset($_SESSION['login_info'])) {
                 <div class="content-wrapper">
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <div class="col-lg-4 mb-4 order-0">
+                            <div class="col-lg-12 mb-4 order-0">
                                 <div class="card">
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours (Mr. Michael Cote)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mb-4 order-0">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-sm-12">
-                                            <div class="card-body">
-                                                <a href="calendar_t2.php?title=Research Consult" class="btn btn-secondary col-12">Research Consult (Dr.Patompong Khaw-on)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mb-4 order-0">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-sm-12">
-                                            <div class="card-body">
-                                                <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-secondary col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
+                                                <div style="text-align: center;">
+                                                    <h4>Choose a service that you need and schedule an appointment time.</h4>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 mb-4 order-0">
+                                                        <div class="card">
+                                                            <div class="d-flex align-items-end row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="card-body">
+                                                                        <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-secondary col-12">Editor English Hours <br>(Mr. Michael Cote)</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 mb-4 order-0">
+                                                        <div class="card">
+                                                            <div class="d-flex align-items-end row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="card-body">
+                                                                        <a href="calendar_t2.php?title=Research Consult" class="btn btn-secondary col-12">Research Consult <br>(Dr.Patompong Khaw-on)</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 mb-4 order-0">
+                                                        <div class="card">
+                                                            <div class="d-flex align-items-end row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="card-body">
+                                                                        <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-secondary col-12">Statistic Consult <br>(Dr.Patompong Khaw-on)</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

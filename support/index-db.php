@@ -43,7 +43,7 @@ if (
               timer: 1500,
               showConfirmButton: false
             }, function(){
-              window.location = "calendar.php";
+              window.location = "index.php";
             });
           </script>';
     } else {
@@ -55,7 +55,7 @@ if (
               timer: 1500,
               showConfirmButton: false
             }, function(){
-              window.location.href = "calendar.php";
+              window.location.href = "index.php";
             });
           </script>';
     }

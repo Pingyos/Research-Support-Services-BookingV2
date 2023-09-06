@@ -30,7 +30,7 @@ if (isset($_SESSION['login_info'])) {
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-dark col-12">Editor English Hours (Mr. Michael Cote)</a>
+                                                <a href="calendar_t1.php?title=Editor English Hours" class="btn btn-danger col-12">Editor English Hours (Mr. Michael Cote)</a>
                                             </div>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@ if (isset($_SESSION['login_info'])) {
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t2.php?title=Research Consult" class="btn btn-dark col-12">Research Consult (Dr.Patompong Khaw-on)</a>
+                                                <a href="calendar_t2.php?title=Research Consult" class="btn btn-warning col-12">Research Consult (Dr.Patompong Khaw-on)</a>
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@ if (isset($_SESSION['login_info'])) {
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-12">
                                             <div class="card-body">
-                                                <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-dark col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
+                                                <a href="calendar_t2.php?title=Statistic Consult" class="btn btn-info col-12">Statistic Consult(Dr.Patompong Khaw-on)</a>
                                             </div>
                                         </div>
                                     </div>

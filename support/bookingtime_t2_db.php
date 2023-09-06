@@ -39,7 +39,8 @@ if (
   // ตรวจสอบว่าข้อมูลถูกบันทึกเรียบร้อยหรือไม่
   if ($result1 && $result2) {
     // สร้างข้อความที่จะส่งไปยัง Line Notify
-    $sToken = ["MJ8OSZyno8b7v2LqVexPMP4KuWhs5z93fS84Zhltc89"]; // เปลี่ยนเป็น Line Notify Token ของคุณ
+    // MJ8OSZyno8b7v2LqVexPMP4KuWhs5z93fS84Zhltc89
+    $sToken = [""]; // เปลี่ยนเป็น Line Notify Token ของคุณ
     $sMessage = "Booking\r\n";
     $sMessage .= "\n";
     $sMessage .= "Booking Id: " . $booking_id . "\n";

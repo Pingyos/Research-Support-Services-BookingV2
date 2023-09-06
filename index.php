@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <div class="container col-6">
-        <h3>Our website is currently down for maintenance. We apologize for any inconvenience and appreciate your patience as we work to improve it.</h3>
-        <h5>Please check back later or contact us for urgent inquiries.</h5>
-    </div>
-</body>
-
-</html>
+<script>
+    // เพิ่มการนำทางไปยังหน้า user/ หลังจากที่เว็บไซต์พร้อมใช้งาน
+    setTimeout(function() {
+        window.location.href = "user/";
+    }, 100); // 5000 มิลลิวินาที (คือ 5 วินาที) ก่อนที่จะนำทาง
+</script>

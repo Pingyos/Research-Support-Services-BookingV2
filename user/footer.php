@@ -5,7 +5,7 @@
             <script>
                 document.write(new Date().getFullYear());
             </script>
-            Research Support Services Booking
+            | Research Support Services Booking
         </div>
     </div>
 </footer>

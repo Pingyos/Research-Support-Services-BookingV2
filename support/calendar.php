@@ -108,7 +108,7 @@ if (isset($_SESSION['login_info'])) {
                                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                                     <label for="meeting" class="form-label">Meeting</label>
                                                                                     <div class="input-group input-group-merge">
-                                                                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                                                                        <span class="input-group-text"><i class="bx bx-navigation"></i></span>
                                                                                         <input type="text" name="meeting" id="meeting" class="form-control" value="${event.extendedProps.meeting}" readonly />
                                                                                     </div>
                                                                                 </div>
@@ -138,7 +138,7 @@ if (isset($_SESSION['login_info'])) {
                                                                                     <label for="note" class="form-label">Note</label>
                                                                                     <div class="input-group input-group-merge">
                                                                                         <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                                        <textarea id="note" name="note" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly>${event.extendedProps.note}</textarea>
+                                                                                        <textarea id="note" name="note" class="form-control" placeholder="Note" aria-describedby="basic-icon-default-message2" readonly>${event.extendedProps.note}</textarea>
                                                                                     </div>
                                                                                 </div>                                         
                                                                             </div>                                                                 
@@ -171,6 +171,20 @@ if (isset($_SESSION['login_info'])) {
             $result = $stmt->get_result();
 
             while ($row = $result->fetch_assoc()) {
+                $statusUser = $row['status_user'];
+                $statusText = ''; // ตัวแปรสำหรับเก็บข้อความที่จะแสดง
+
+                // กำหนดข้อความตามเงื่อนไขของ status_user
+                if ($statusUser == "'") {
+                    $statusText = 'Pending';
+                } elseif ($statusUser == 1) {
+                    $statusText = 'Confirmed';
+                } elseif ($statusUser == 2) {
+                    $statusText = 'Cancel Booking';
+                } else {
+                    $statusText = 'Contact Admin';
+                }
+
                 $event = array(
                     'id' => $row['id'],
                     'title' => $row['title'],
@@ -181,7 +195,7 @@ if (isset($_SESSION['login_info'])) {
                     'email' => $row['email'],
                     'meeting' => $row['meeting'],
                     'tel' => $row['tel'],
-                    'status_user' => $row['status_user'],
+                    'status_user' => $statusText, // ใช้ข้อความที่กำหนดตามเงื่อนไข
                     'service' => $row['service'],
                     'note' => $row['note'],
                 );

@@ -59,7 +59,9 @@ if (isset($_SESSION['login_info'])) {
                                                             <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                                 <div class="card-body">
                                                                     <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
-                                                                    <h5 class="card-title"><?= $t1['date']; ?> - <?= $t1['timeslot']; ?></h5>
+                                                                    <h5 class="card-title">
+                                                                        <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> - <?= $t1['timeslot']; ?>
+                                                                    </h5>
                                                                     <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
                                                                     <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
@@ -73,12 +75,12 @@ if (isset($_SESSION['login_info'])) {
                                                                             function confirmDelete(bookingId) {
                                                                                 swal({
                                                                                         title: "Are you sure?",
-                                                                                        text: "Once cancel , you will not be able to recover this booking!",
+                                                                                        text: "you want to cancel this booking? Once cancelled, it cannot be recovered.",
                                                                                         type: "warning",
                                                                                         showCancelButton: true,
                                                                                         confirmButtonColor: "#DD6B55",
                                                                                         confirmButtonText: "Yes, cancel it!",
-                                                                                        cancelButtonText: "Cancel",
+                                                                                        cancelButtonText: "No",
                                                                                         closeOnConfirm: false
                                                                                     },
                                                                                     function(isConfirm) {
@@ -141,7 +143,7 @@ if (isset($_SESSION['login_info'])) {
                                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                                     <label for="meeting" class="form-label">meeting</label>
                                                                                     <div class="input-group input-group-merge">
-                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
                                                                                         <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
                                                                                     </div>
                                                                                 </div>
@@ -157,7 +159,17 @@ if (isset($_SESSION['login_info'])) {
                                                                                     <label for="status_user" class="form-label">Status</label>
                                                                                     <div class="input-group input-group-merge">
                                                                                         <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                                        <input type="text" name="status_user" class="form-control" value="<?= $t1['status_user']; ?>" readonly />
+                                                                                        <input type="text" name="status_user" class="form-control" value="<?php
+                                                                                                                                                            if ($t1['status_user'] == "'") {
+                                                                                                                                                                echo "Pending";
+                                                                                                                                                            } elseif ($t1['status_user'] == 1) {
+                                                                                                                                                                echo "Confirmed";
+                                                                                                                                                            } elseif ($t1['status_user'] == 2) {
+                                                                                                                                                                echo "Cancel Booking";
+                                                                                                                                                            } else {
+                                                                                                                                                                echo "Pending"; // กรณีอื่น ๆ
+                                                                                                                                                            }
+                                                                                                                                                            ?>" readonly />
                                                                                     </div>
                                                                                 </div>
                                                                                 <?php if (!empty($t1['service'])) : ?>

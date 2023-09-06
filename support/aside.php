@@ -25,7 +25,7 @@
         <li class="menu-item">
             <a href="booking_off.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-x"></i>
-                <div data-i18n="">Booking-off</div>
+                <div data-i18n="">Hours Of Availability</div>
             </a>
         </li>
         <li class="menu-item">

@@ -57,8 +57,8 @@ if (isset($_SESSION['login_info'])) {
                                             });
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
+                                            }, 1500);
                                             }, 1000);
-                                            }, 500);
                                         </script>';
                                 } else {
                                     echo '<script>
@@ -71,8 +71,8 @@ if (isset($_SESSION['login_info'])) {
                                             });
                                             setTimeout(function() {
                                                 window.location = "viewdata.php";
+                                            }, 1500);
                                             }, 1000);
-                                            }, 500);
                                         </script>';
                                 }
                                 $mysqli->close();

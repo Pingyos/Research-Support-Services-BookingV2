@@ -42,7 +42,8 @@ if (
 
     $result2 = $stmt2->execute();
     if ($result1 && $result2) {
-        $sToken = ["MJ8OSZyno8b7v2LqVexPMP4KuWhs5z93fS84Zhltc89"];
+        // MJ8OSZyno8b7v2LqVexPMP4KuWhs5z93fS84Zhltc89
+        $sToken = [""];
         $sMessage = "Booking\r\n";
         $sMessage .= "\n";
         $sMessage .= "Booking Id: " . $booking_id . "\n";
@@ -87,7 +88,7 @@ if (
         echo '<script>
       swal({
         title: "Booking Success",
-        text: "University add success",
+        text: "Pending",
         type: "success",
         timer: 1500,
         showConfirmButton: false
@@ -98,8 +99,8 @@ if (
     } else {
         echo '<script>
       swal({
-        title: "Add Data Fail",
-        text: "Failed to add data",
+        title: "Booking Fail",
+        text: "Pending",
         type: "error",
         timer: 1500,
         showConfirmButton: false

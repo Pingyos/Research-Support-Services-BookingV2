@@ -115,7 +115,7 @@ if (isset($_SESSION['login_info'])) {
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="title" class="form-label">title</label>
+                                                                        <label for="title" class="form-label">Service</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
                                                                             <input type="text" name="title" id="title" class="form-control" value="<?php echo isset($_GET['title']) ? htmlspecialchars($_GET['title']) : ''; ?>" readonly />
@@ -136,7 +136,7 @@ if (isset($_SESSION['login_info'])) {
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="tel" class="form-label">Tel</label>
+                                                                        <label for="tel" class="form-label">Mobile Number</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
                                                                             <input type="text" name="tel" id="tel" class="form-control" value="" />
@@ -158,7 +158,7 @@ if (isset($_SESSION['login_info'])) {
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" required></textarea>
+                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Could you please provide a concise summary of your manuscript? Let me know what assistance is needed to this." aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
                                                                     <input type="text" name="booking_id" value="<?php echo 'P-' . date('is') . '-' . (date('Y')); ?>" hidden>
