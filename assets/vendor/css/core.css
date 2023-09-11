@@ -3,7 +3,7 @@
   --bs-blue: #007bff;
   --bs-indigo: #6610f2;
   --bs-purple: #5577B4;
-  --bs-pink: #FFA45B;
+  --bs-pink: #71dd37;
   --bs-red: #ff3e1d;
   --bs-orange: #fd7e14;
   --bs-yellow: #ffab00;
@@ -261,7 +261,7 @@ pre code {
 
 code {
   font-size: 85%;
-  color: #FFA45B;
+  color: #71dd37;
   word-wrap: break-word;
 }
 a > code {
