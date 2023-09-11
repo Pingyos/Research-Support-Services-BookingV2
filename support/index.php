@@ -107,7 +107,7 @@
                                                                 </h5>
                                                                 <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
                                                                 <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
-                                                                <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                             </div>
                                                         </div>
                                                     </div>
