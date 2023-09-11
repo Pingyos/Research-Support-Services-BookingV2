@@ -266,7 +266,7 @@ temporary rendered events).
 
 .fc-event,
 .fc-event-dot {
-  background-color: #696CFF;
+  background-color: #5577B4;
 }
 
 .fc-event,
@@ -716,14 +716,14 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
 /* "primary" coloring */
 .fc-button-primary {
   color: #fff;
-  background-color: #696CFF;
-  border-color: #696CFF;
+  background-color: #5577B4;
+  border-color: #5577B4;
 }
 
 .fc-button-primary:hover {
   color: #fff;
-  background-color: #f67280;
-  border-color: #f67280;
+  background-color: #FFa45B;
+  border-color: #FFa45B;
 }
 
 
@@ -735,15 +735,15 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
 
 .fc-button-primary:disabled {
   color: #fff;
-  background-color: #696CFF;
-  border-color: #696CFF;
+  background-color: #5577B4;
+  border-color: #5577B4;
 }
 
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
   color: #fff;
-  background-color: #f67280;
-  border-color: #f67280;
+  background-color: #FFa45B;
+  border-color: #FFa45B;
 }
 
 .fc-button-primary:not(:disabled):active:focus,

@@ -34,7 +34,7 @@
                                                 <div class="row">
                                                     <?php
                                                     require_once 'connect.php';
-                                                    $stmt = $mysqli->prepare("SELECT * FROM booking WHERE email = ? ORDER BY dateCreate DESC");
+                                                    $stmt = $mysqli->prepare("SELECT * FROM booking  ORDER BY dateCreate DESC");
                                                     $stmt->bind_param("s", $email);
                                                     $stmt->execute();
                                                     $result = $stmt->get_result();
@@ -60,10 +60,10 @@
                                                                 <div class="card-body">
                                                                     <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
                                                                     <h5 class="card-title">
-                                                                        <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> - <?= $t1['timeslot']; ?>
+                                                                        <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> | <?= $t1['timeslot']; ?>
                                                                     </h5>
-                                                                    <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
-                                                                    <p class="card-text"><?= $t1['meeting']; ?> (<?= $t1['service']; ?>)</p>
+                                                                    <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
+                                                                    <p class="card-text"><?= $t1['meeting']; ?> | <?= $t1['service']; ?></p>
                                                                     <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                                     <?php if ($canCancel) : ?>
                                                                         <a class="btn btn-danger text-white" href="javascript:void(0);" onclick="confirmDelete('<?= $t1['booking_id']; ?>')">Cancel</a>

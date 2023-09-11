@@ -71,7 +71,7 @@ if (
       notify_message($sMessage, $Token);
     }
 
-    $apiUrl = 'https://script.google.com/macros/s/AKfycbwxG_SipbH1Jl_Q_MSwYPAcWAXyrxkK6Luoq7hFlcTOGKP7M_yKzGmUpcqEaZyu5Vwt0w/exec?action=addUser';
+    $apiUrl = 'https://script.google.com/macros/s/AKfycbwenBSuCsjFMdE25SD_TYLwJ9ca6oUw5b9JuSnYi9LGk7htIR8wHO7K1b_PI4swCSZcOA/exec?action=addUser';
     $jsonData = json_encode(array(
       'name' => $row['name'],
       'data' => $row['dateCreate'],
