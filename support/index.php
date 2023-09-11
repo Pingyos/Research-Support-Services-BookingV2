@@ -56,9 +56,7 @@
                                     <div class="card-body">
                                         <?php
                                         require_once 'connect.php';
-
-                                        // กำหนดจำนวนรายการที่ต้องการแสดงต่อหน้า
-                                        $itemsPerPage = 9; // เปลี่ยนตามความต้องการ
+                                        $itemsPerPage = 9;
 
                                         $searchTitle1 = "Editor English Hours";
                                         $searchTitle2 = "Research Consult";
@@ -74,7 +72,6 @@
                                         // คำนวณจำนวนหน้าทั้งหมด
                                         $totalPages = ceil($totalItems / $itemsPerPage);
 
-                                        // กำหนดหน้าปัจจุบัน (โดยสามารถรับค่ามาจากการรีเควสหรือตามความต้องการ)
                                         $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
                                         // คำนวณข้อมูลที่จะแสดงบนหน้าปัจจุบัน

@@ -34,26 +34,37 @@
                                                 <div class="row">
                                                     <?php
                                                     require_once 'connect.php';
-                                                    $stmt = $mysqli->prepare("SELECT * FROM booking  ORDER BY dateCreate DESC");
-                                                    $stmt->bind_param("s", $email);
+
+                                                    $itemsPerPage = 9;
+                                                    $stmtCount = $mysqli->prepare("SELECT COUNT(*) AS total FROM booking WHERE email = ? ORDER BY dateCreate DESC");
+                                                    $stmtCount->bind_param('s', $email);
+                                                    $stmtCount->execute();
+                                                    $resultCount = $stmtCount->get_result();
+                                                    $totalItems = $resultCount->fetch_assoc()['total'];
+                                                    $totalPages = ceil($totalItems / $itemsPerPage);
+
+                                                    $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+
+
+                                                    $offset = ($currentPage - 1) * $itemsPerPage;
+                                                    $stmt = $mysqli->prepare("SELECT * FROM booking WHERE email = ? ORDER BY dateCreate DESC LIMIT ?, ?");
+                                                    $stmt->bind_param('sii', $email, $offset, $itemsPerPage);
                                                     $stmt->execute();
                                                     $result = $stmt->get_result();
 
                                                     foreach ($result as $t1) {
                                                         $title = $t1['title'];
 
-
                                                         $bgColor = '';
                                                         if ($t1['status_user'] == 0) {
                                                             $bgColor = '#f5f5f5'; // สีเทา
-                                                        } else if ($t1['status_user'] == 1) {
+                                                        } elseif ($t1['status_user'] == 1) {
                                                             $bgColor = '#EAFAF1'; // สีเขียวอ่อน
-                                                        } else if ($t1['status_user'] == 2) {
+                                                        } elseif ($t1['status_user'] == 2) {
                                                             $bgColor = '#FBEEE6'; // สีส้มอ่อน
                                                         }
                                                         $status_user = $t1['status_user'];
                                                         $canCancel = $status_user != 1 && $status_user != 2;
-
                                                     ?>
                                                         <div class="col-md-6 col-lg-4 mb-3">
                                                             <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
@@ -70,7 +81,6 @@
                                                                         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
                                                                         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
                                                                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-
                                                                         <script>
                                                                             function confirmDelete(bookingId) {
                                                                                 swal({
@@ -90,7 +100,6 @@
                                                                                     });
                                                                             }
                                                                         </script>
-
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
@@ -210,6 +219,29 @@
                                                             </div>
                                                         </div>
                                                     <?php } ?>
+                                                    <div class="d-flex justify-content-end">
+                                                        <nav aria-label="Page navigation">
+                                                            <ul class="pagination">
+                                                                <li class="page-item first">
+                                                                    <a class="page-link" href="?page=1"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                                                                </li>
+                                                                <li class="page-item prev">
+                                                                    <a class="page-link" href="?page=<?php echo max(1, $currentPage - 1); ?>"><i class="tf-icon bx bx-chevron-left"></i></a>
+                                                                </li>
+                                                                <?php for ($page = 1; $page <= $totalPages; $page++) { ?>
+                                                                    <li class="page-item <?php if ($page == $currentPage) echo 'active'; ?>">
+                                                                        <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                                                                    </li>
+                                                                <?php } ?>
+                                                                <li class="page-item next">
+                                                                    <a class="page-link" href="?page=<?php echo min($totalPages, $currentPage + 1); ?>"><i class="tf-icon bx bx-chevron-right"></i></a>
+                                                                </li>
+                                                                <li class="page-item last">
+                                                                    <a class="page-link" href="?page=<?php echo $totalPages; ?>"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
