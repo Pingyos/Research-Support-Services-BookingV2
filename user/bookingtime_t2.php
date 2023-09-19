@@ -139,7 +139,7 @@
                                                                         <label for="tel" class="form-label">Mobile Number</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" />
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" readonly/>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
@@ -162,6 +162,9 @@
                                                                         </div>
                                                                     </div>
                                                                     <input type="text" name="booking_id" value="<?php echo 'P-' . date('is') . '-' . (date('Y')); ?>" hidden>
+                                                                    <input type="text" name="status_user" value="0" hidden>
+                                                                    <input type="text" name="service" value="" hidden>
+                                                                    <input type="text" name="note" value="" hidden>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

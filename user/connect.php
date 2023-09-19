@@ -5,7 +5,6 @@ $username = 'root';
 $password = '';
 $database = 'booking';
 
-// Create a new mysqli instance
 $mysqli = new mysqli($host, $username, $password, $database);
 
 // Check for connection errors

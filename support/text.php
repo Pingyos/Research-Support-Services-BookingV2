@@ -1,194 +1,102 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "booking")
-  or die("Error: " . mysqli_error($conn));
-mysqli_query($conn, "SET NAMES 'utf8' ");
-$query = mysqli_query($conn, "SELECT COUNT(id) FROM `booking` ");
-$row = mysqli_fetch_row($query);
+if (
+  isset($_POST['date'])
+  && isset($_POST['timeslot'])
+  && isset($_POST['title'])
+  && isset($_POST['name'])
+  && isset($_POST['email'])
+  && isset($_POST['tel'])
+  && isset($_POST['meeting'])
+  && isset($_POST['manutitle'])
+  && isset($_POST['booking_id'])
+) {
+  require_once 'connect.php';
+  $date = $_POST['date'];
+  $timeslot = $_POST['timeslot'];
+  $title = $_POST['title'];
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $tel = $_POST['tel'];
+  $meeting = $_POST['meeting'];
+  $manutitle = $_POST['manutitle'];
+  $booking_id = $_POST['booking_id'];
 
-$rows = $row[0];
+  // Prepare the statement for booking_t1 table
+  $stmt_t2 = $mysqli->prepare("INSERT INTO booking_t1 (date, booking_id, timeslot, title, name, email, tel, meeting, manutitle)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-$page_rows = 5;
+  if ($stmt_t2 === false) {
+    die("Prepare failed: " . $mysqli->error);
+  }
 
-$last = ceil($rows / $page_rows);
+  $result = $stmt_t2->bind_param('sssssssss', $date, $booking_id, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
 
-if ($last < 1) {
-  $last = 1;
-}
+  if ($result === false) {
+    die("Bind failed: " . $stmt_t2->error);
+  }
 
-$pagenum = 1;
+  if ($stmt_t2->execute()) {
+    $booking_id = $stmt_t2->insert_id;
 
-if (isset($_GET['pn'])) {
-  $pagenum = preg_replace('#[^0-9]#', '', $_GET['pn']);
-}
+    // Prepare the statement for booking table
+    $stmt_all = $mysqli->prepare("INSERT INTO booking (booking_id, date, timeslot, title, name, email, tel, meeting, manutitle)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-if ($pagenum < 1) {
-  $pagenum = 1;
-} else if ($pagenum > $last) {
-  $pagenum = $last;
-}
-
-$limit = 'LIMIT ' . ($pagenum - 1) * $page_rows . ',' . $page_rows;
-
-$nquery = mysqli_query($conn, "SELECT * from booking ORDER BY id DESC $limit");
-
-$paginationCtrls = '';
-
-if ($last != 1) {
-
-  if ($pagenum > 1) {
-    $previous = $pagenum - 1;
-    $paginationCtrls .= '<a href="' . $_SERVER['PHP_SELF'] . '?pn=' . $previous . '" class="btn btn-info">Previous</a> &nbsp; &nbsp; ';
-
-    for ($i = $pagenum - 4; $i < $pagenum; $i++) {
-      if ($i > 0) {
-        $paginationCtrls .= '<a href="' . $_SERVER['PHP_SELF'] . '?pn=' . $i . '" class="btn btn-primary">' . $i . '</a> &nbsp; ';
-      }
+    if ($stmt_all === false) {
+      die("Prepare failed: " . $mysqli->error);
     }
-  }
 
-  $paginationCtrls .= '' . $pagenum . ' &nbsp; ';
+    $result_all = $stmt_all->bind_param('ssssssssss', $booking_id, $date, $timeslot, $title, $name, $email, $tel, $meeting, $manutitle);
 
-  for ($i = $pagenum + 1; $i <= $last; $i++) {
-    $paginationCtrls .= '<a href="' . $_SERVER['PHP_SELF'] . '?pn=' . $i . '" class="btn btn-primary">' . $i . '</a> &nbsp; ';
-    if ($i >= $pagenum + 4) {
-      break;
+    if ($result_all === false) {
+      die("Bind failed: " . $stmt_all->error);
     }
-  }
 
-  if ($pagenum != $last) {
-    $next = $pagenum + 1;
-    $paginationCtrls .= ' &nbsp; &nbsp; <a href="' . $_SERVER['PHP_SELF'] . '?pn=' . $next . '" class="btn btn-info">Next</a> ';
+    // Execute statement for booking
+    if ($stmt_all->execute()) {
+      echo '
+          <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">';
+      echo '<script>
+          swal({
+            title: "Add Data Success",
+            text: "University add success",
+            type: "success",
+            timer: 1500,
+            showConfirmButton: false
+          }, function(){
+              window.location = "viewdata.php";
+          });
+        </script>';
+    } else {
+      echo '<script>
+          swal({
+            title: "Add Data Fail",
+            text: "Failed to add data",
+            type: "error",
+            timer: 1500,
+            showConfirmButton: false
+          }, function(){
+            window.location.href = "viewdata.php";
+          });
+        </script>';
+    }
+    $stmt_all->close(); // Close the statement
+  } else {
+    echo '<script>
+        swal({
+          title: "Add Data Fail",
+          text: "Failed to add data",
+          type: "error",
+          timer: 1500,
+          showConfirmButton: false
+        }, function(){
+          window.location.href = "viewdata.php";
+        });
+      </script>';
   }
+  $stmt_t2->close(); // Close the statement
+  
+  $mysqli->close();
 }
-?>
-
-
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Untitled Document</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
-
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-
-
-  <link href="css/cite.css" rel="stylesheet">
-
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-
-  <!-- Add jQuery library -->
-  <script type="text/javascript" src="lib/jquery-1.10.1.min.js"></script>
-</head>
-
-<body>
-
-  </br>
-  </br>
-
-
-
-
-  <div class="container">
-
-
-
-
-
-
-
-    <div class="row">
-
-
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-12">
-
-
-        <table width="100%" class="table table-striped table-bordered table-hover">
-
-          <thead>
-            <tr class="info">
-              <th rowspan="2">ลำดับ</th>
-              <th rowspan="2">ชื่อจริง</th>
-
-              <th rowspan="2">นามสกุล</th>
-              <th rowspan="2">ชื่อผู้ใช้</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-            <?php
-            while ($crow = mysqli_fetch_array($nquery)) {
-            ?>
-
-              <?php @$num++; ?>
-              <tr>
-                <td><?php echo $num; ?></td>
-                <td><?php echo $crow['name']; ?></td>
-
-
-
-                </td>
-                <td><?php echo $crow['title']; ?></td>
-                <td><?php echo $crow['timeslot']; ?></td>
-
-
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
-        </table>
-        <center>
-          <div id="pagination_controls"><?php echo $paginationCtrls; ?></div>
-        </center>
-
-
-
-
-      </div>
-      <div class="col-md-2">
-
-      </div>
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-  </div>
-
-
-
-
-
-
-</body>
-
-</html>

@@ -137,21 +137,21 @@
                                                                         <label for="name" class="form-label">FullName</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="nest" readonly />
+                                                                            <input type="text" name="name" id="name" class="form-control" value="<?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="phatcharapon.p@cmu.ac.th" readonly />
+                                                                            <input type="text" name="email" id="email" class="form-control" value="<?php echo $json['cmuitaccount']; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="tel" class="form-label">Mobile Number</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="123456789" />
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" readonly/>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">

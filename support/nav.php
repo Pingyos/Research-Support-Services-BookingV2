@@ -1,13 +1,13 @@
 <?php
-// if (!isset($_SESSION['login_info'])) {
-//     header('Location: ../user/login.php');
-//     exit;
-// }
-// if (isset($_SESSION['login_info'])) {
-//     $json = $_SESSION['login_info'];
-// } else {
-//     echo "You are not logged in.";
-// }
+if (!isset($_SESSION['login_info'])) {
+    header('Location: ../user/login.php');
+    exit;
+}
+if (isset($_SESSION['login_info'])) {
+    $json = $_SESSION['login_info'];
+} else {
+    echo "You are not logged in.";
+}
 ?>
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -18,7 +18,7 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-            <!-- <span class="fw-semibold d-block"><?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?></span> -->
+            <span class="fw-semibold d-block"><?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?></span>
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -36,8 +36,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <!-- <span class="fw-semibold d-block"><?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?></span>
-                                    <small class="text-muted"><?php echo $json['organization_name_EN']; ?></small> -->
+                                    <span class="fw-semibold d-block"><?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?></span>
+                                    <small class="text-muted"><?php echo $json['organization_name_EN']; ?></small>
                                 </div>
                             </div>
                         </a>

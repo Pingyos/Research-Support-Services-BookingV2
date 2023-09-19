@@ -57,11 +57,11 @@
 
                                                         $bgColor = '';
                                                         if ($t1['status_user'] == 0) {
-                                                            $bgColor = '#f5f5f5'; // สีเทา
+                                                            $bgColor = '#E3E3E3'; // สีเทา
                                                         } elseif ($t1['status_user'] == 1) {
-                                                            $bgColor = '#EAFAF1'; // สีเขียวอ่อน
+                                                            $bgColor = '#D9FFEA'; // สีเขียวอ่อน
                                                         } elseif ($t1['status_user'] == 2) {
-                                                            $bgColor = '#FBEEE6'; // สีส้มอ่อน
+                                                            $bgColor = '#FFE2D2'; // สีส้มอ่อน
                                                         }
                                                         $status_user = $t1['status_user'];
                                                         $canCancel = $status_user != 1 && $status_user != 2;

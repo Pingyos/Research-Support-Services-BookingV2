@@ -16,10 +16,26 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+        <?php
+        require_once '../user/connect.php';
+
+        $stmt = $mysqli->prepare("SELECT COUNT(*) AS count FROM booking WHERE status_user = 0");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $count = $row['count'];
+        } else {
+            $count = 0;
+        }
+        ?>
+
         <li class="menu-item">
             <a href="index.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-bookmark-plus"></i>
-                <div data-i18n="Analytics">Booking</div>
+                <div data-i18n="Analytics">Booking</div>&nbsp;
+                <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"><?php echo $count; ?></span>
             </a>
         </li>
         <li class="menu-item">

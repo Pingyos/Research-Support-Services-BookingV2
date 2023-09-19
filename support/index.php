@@ -1,39 +1,26 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['login_info'])) {
-//     header('Location: ../user/login.php');
-//     exit;
-// }
-// require_once 'connect.php';
+session_start();
+if (!isset($_SESSION['login_info'])) {
+    header('Location: ../user/login.php');
+    exit;
+}
+require_once 'connect.php';
 
-// $json = $_SESSION['login_info'];
-// $email = $json['cmuitaccount'];
+$json = $_SESSION['login_info'];
+$email = $json['cmuitaccount'];
 
-// $sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
-// $stmt = $mysqli->prepare($sql);
-// $stmt->bind_param("s", $email);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// $row = $result->fetch_assoc();
-// $count = $row['count'];
-// if ($count === 0) {
-//     header('Location: ../user/login.php');
-//     exit;
-// }
-// $sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
-// $stmt = $mysqli->prepare($sql);
-// $stmt->bind_param("s", $email);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// if ($result->num_rows > 0) {
-//     $row = $result->fetch_assoc();
-//     $title1 = $row['title1'];
-//     $title2 = $row['title2'];
-//     $title3 = $row['title3'];
-// } else {
-//     header('Location: ../user/login.php?error=user_not_found');
-//     exit;
-// }
+$sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$count = $row['count'];
+if ($count === 0) {
+    header('Location: ../user/login.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -53,14 +40,31 @@
                         <div class="row">
                             <div class="col-md-12 col-lg-4 col-xl-12 order-0 mb-4">
                                 <div class="card h-100">
+                                    <?php
+                                    $sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
+                                    $stmt = $mysqli->prepare($sql);
+                                    $stmt->bind_param("s", $email);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                                    if ($result->num_rows > 0) {
+                                        $row = $result->fetch_assoc();
+                                        $title1 = $row['title1'];
+                                        $title2 = $row['title2'];
+                                        $title3 = $row['title3'];
+                                    } else {
+                                        header('Location: ../user/login.php?error=user_not_found');
+                                        exit;
+                                    }
+                                    ?>
                                     <div class="card-body">
                                         <?php
                                         require_once 'connect.php';
+
                                         $itemsPerPage = 9;
 
-                                        $searchTitle1 = "Editor English Hours";
-                                        $searchTitle2 = "Research Consult";
-                                        $searchTitle3 = "Statistic Consult";
+                                        $searchTitle1 = $row['title1'];
+                                        $searchTitle2 = $row['title2'];
+                                        $searchTitle3 = $row['title3'];
 
                                         // คำนวณจำนวนข้อมูลทั้งหมด
                                         $stmtCount = $mysqli->prepare("SELECT COUNT(*) FROM booking WHERE title = ? OR title = ? OR title = ?");
@@ -72,6 +76,7 @@
                                         // คำนวณจำนวนหน้าทั้งหมด
                                         $totalPages = ceil($totalItems / $itemsPerPage);
 
+                                        // กำหนดหน้าปัจจุบัน (โดยสามารถรับค่ามาจากการรีเควสหรือตามความต้องการ)
                                         $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
                                         // คำนวณข้อมูลที่จะแสดงบนหน้าปัจจุบัน
@@ -89,23 +94,23 @@
                                                     $title = $t1['title'];
                                                     $bgColor = '';
                                                     if ($t1['status_user'] == 0) {
-                                                        $bgColor = '#f5f5f5'; // สีเทา
+                                                        $bgColor = '#E3E3E3'; // สีเทา
                                                     } else if ($t1['status_user'] == 1) {
-                                                        $bgColor = '#EAFAF1'; // สีเขียวอ่อน
+                                                        $bgColor = '#D9FFEA'; // สีเขียวอ่อน
                                                     } else if ($t1['status_user'] == 2) {
-                                                        $bgColor = '#FBEEE6'; // สีส้มอ่อน
+                                                        $bgColor = '#FFE2D2'; // สีส้มอ่อน
                                                     }
                                                     $status_user = $t1['status_user'];
                                                     $canCancel = $status_user != 1 && $status_user != 2;
                                                 ?>
-                                                    <div class="col-md-6 col-lg-4 mb-3">
+                                                    <div class="col-md- col-lg-4 mb-3">
                                                         <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                             <div class="card-body">
                                                                 <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
                                                                 <h5 class="card-title">
                                                                     <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> | <?= $t1['timeslot']; ?>
                                                                 </h5>
-                                                                <p class="card-text"><?= $t1['name']; ?> / <?= $t1['title']; ?></p>
+                                                                <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
                                                                 <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
                                                                 <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                             </div>
@@ -113,7 +118,6 @@
                                                     </div>
                                                 <?php } ?>
                                             </div>
-
                                             <div class="d-flex justify-content-end">
                                                 <nav aria-label="Page navigation">
                                                     <ul class="pagination">
@@ -137,7 +141,6 @@
                                                     </ul>
                                                 </nav>
                                             </div>
-
                                         </div>
                                         <?php foreach ($result as $t1) { ?>
                                             <div class="modal fade" id="exLargeModal<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
@@ -190,6 +193,13 @@
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
                                                                             <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                        <label for="tel" class="form-label">Mobile Number</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-12 col-12 mb-2">
