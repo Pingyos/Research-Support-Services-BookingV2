@@ -1,25 +1,25 @@
 <?php
-session_start();
-if (!isset($_SESSION['login_info'])) {
-    header('Location: ../user/login.php');
-    exit;
-}
-require_once 'connect.php';
+// session_start();
+// if (!isset($_SESSION['login_info'])) {
+//     header('Location: ../user/login.php');
+//     exit;
+// }
+// require_once 'connect.php';
 
-$json = $_SESSION['login_info'];
-$email = $json['cmuitaccount'];
+// $json = $_SESSION['login_info'];
+// $email = $json['cmuitaccount'];
 
-$sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
-$stmt = $mysqli->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-$count = $row['count'];
-if ($count === 0) {
-    header('Location: ../user/login.php');
-    exit;
-}
+// $sql = "SELECT COUNT(*) AS count FROM cmuitaccount WHERE cmuitaccount = ?";
+// $stmt = $mysqli->prepare($sql);
+// $stmt->bind_param("s", $email);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// $row = $result->fetch_assoc();
+// $count = $row['count'];
+// if ($count === 0) {
+//     header('Location: ../user/login.php');
+//     exit;
+// }
 
 ?>
 
@@ -41,295 +41,276 @@ if ($count === 0) {
                             <div class="col-md-12 col-lg-4 col-xl-12 order-0 mb-4">
                                 <div class="card h-100">
                                     <?php
-                                    $sql = "SELECT title1, title2, title3 FROM cmuitaccount WHERE cmuitaccount = ?";
-                                    $stmt = $mysqli->prepare($sql);
-                                    $stmt->bind_param("s", $email);
+                                    require_once 'connect.php';
+                                    $itemsPerPage = 9;
+
+                                    $searchTitle1 = "Editor English Hours";
+                                    $searchTitle2 = "Research Consult";
+                                    $searchTitle3 = "Statistic Consult";
+
+                                    // คำนวณจำนวนข้อมูลทั้งหมด
+                                    $stmtCount = $mysqli->prepare("SELECT COUNT(*) FROM booking WHERE title = ? OR title = ? OR title = ?");
+                                    $stmtCount->bind_param("sss", $searchTitle1, $searchTitle2, $searchTitle3);
+                                    $stmtCount->execute();
+                                    $resultCount = $stmtCount->get_result();
+                                    $totalItems = $resultCount->fetch_assoc()['COUNT(*)'];
+
+                                    // คำนวณจำนวนหน้าทั้งหมด
+                                    $totalPages = ceil($totalItems / $itemsPerPage);
+
+                                    $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+
+                                    // คำนวณข้อมูลที่จะแสดงบนหน้าปัจจุบัน
+                                    $offset = ($currentPage - 1) * $itemsPerPage;
+
+                                    // ดึงข้อมูลจากฐานข้อมูลโดยใช้ LIMIT เพื่อแบ่งหน้า
+                                    $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY id DESC LIMIT ?, ?");
+                                    $stmt->bind_param("sssss", $searchTitle1, $searchTitle2, $searchTitle3, $offset, $itemsPerPage);
                                     $stmt->execute();
                                     $result = $stmt->get_result();
-                                    if ($result->num_rows > 0) {
-                                        $row = $result->fetch_assoc();
-                                        $title1 = $row['title1'];
-                                        $title2 = $row['title2'];
-                                        $title3 = $row['title3'];
-                                    } else {
-                                        header('Location: ../user/login.php?error=user_not_found');
-                                        exit;
-                                    }
                                     ?>
                                     <div class="card-body">
-                                        <?php
-                                        require_once 'connect.php';
-
-                                        $itemsPerPage = 9;
-
-                                        $searchTitle1 = $row['title1'];
-                                        $searchTitle2 = $row['title2'];
-                                        $searchTitle3 = $row['title3'];
-
-                                        // คำนวณจำนวนข้อมูลทั้งหมด
-                                        $stmtCount = $mysqli->prepare("SELECT COUNT(*) FROM booking WHERE title = ? OR title = ? OR title = ?");
-                                        $stmtCount->bind_param("sss", $searchTitle1, $searchTitle2, $searchTitle3);
-                                        $stmtCount->execute();
-                                        $resultCount = $stmtCount->get_result();
-                                        $totalItems = $resultCount->fetch_assoc()['COUNT(*)'];
-
-                                        // คำนวณจำนวนหน้าทั้งหมด
-                                        $totalPages = ceil($totalItems / $itemsPerPage);
-
-                                        // กำหนดหน้าปัจจุบัน (โดยสามารถรับค่ามาจากการรีเควสหรือตามความต้องการ)
-                                        $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-
-                                        // คำนวณข้อมูลที่จะแสดงบนหน้าปัจจุบัน
-                                        $offset = ($currentPage - 1) * $itemsPerPage;
-
-                                        // ดึงข้อมูลจากฐานข้อมูลโดยใช้ LIMIT เพื่อแบ่งหน้า
-                                        $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY id DESC LIMIT ?, ?");
-                                        $stmt->bind_param("sssss", $searchTitle1, $searchTitle2, $searchTitle3, $offset, $itemsPerPage);
-                                        $stmt->execute();
-                                        $result = $stmt->get_result();
-                                        ?>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <?php foreach ($result as $t1) {
-                                                    $title = $t1['title'];
-                                                    $bgColor = '';
-                                                    if ($t1['status_user'] == 0) {
-                                                        $bgColor = '#E3E3E3'; // สีเทา
-                                                    } else if ($t1['status_user'] == 1) {
-                                                        $bgColor = '#D9FFEA'; // สีเขียวอ่อน
-                                                    } else if ($t1['status_user'] == 2) {
-                                                        $bgColor = '#FFE2D2'; // สีส้มอ่อน
-                                                    }
-                                                    $status_user = $t1['status_user'];
-                                                    $canCancel = $status_user != 1 && $status_user != 2;
-                                                ?>
-                                                    <div class="col-md- col-lg-4 mb-3">
-                                                        <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
-                                                            <div class="card-body">
-                                                                <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
-                                                                <h5 class="card-title">
-                                                                    <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> | <?= $t1['timeslot']; ?>
-                                                                </h5>
-                                                                <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
-                                                                <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
-                                                                <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
-                                                            </div>
+                                        <div class="row">
+                                            <?php foreach ($result as $t1) {
+                                                $title = $t1['title'];
+                                                $bgColor = '';
+                                                if ($t1['status_user'] == 0) {
+                                                    $bgColor = '#E3E3E3'; // สีเทา
+                                                } else if ($t1['status_user'] == 1) {
+                                                    $bgColor = '#D9FFEA'; // สีเขียวอ่อน
+                                                } else if ($t1['status_user'] == 2) {
+                                                    $bgColor = '#FFE2D2'; // สีส้มอ่อน
+                                                }
+                                                $status_user = $t1['status_user'];
+                                                $canCancel = $status_user != 1 && $status_user != 2;
+                                            ?>
+                                                <div class="col-md- col-lg-4 mb-3">
+                                                    <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
+                                                        <div class="card-body">
+                                                            <p class="card-text">Booking id <?= $t1['booking_id']; ?></p>
+                                                            <h5 class="card-title">
+                                                                <?= strftime('%d %B %Y', strtotime($t1['date'])); ?> | <?= $t1['timeslot']; ?>
+                                                            </h5>
+                                                            <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
+                                                            <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
+                                                            <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
                                                         </div>
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-                                            <div class="d-flex justify-content-end">
-                                                <nav aria-label="Page navigation">
-                                                    <ul class="pagination">
-                                                        <li class="page-item first">
-                                                            <a class="page-link" href="?page=1"><i class="tf-icon bx bx-chevrons-left"></i></a>
-                                                        </li>
-                                                        <li class="page-item prev">
-                                                            <a class="page-link" href="?page=<?php echo max(1, $currentPage - 1); ?>"><i class="tf-icon bx bx-chevron-left"></i></a>
-                                                        </li>
-                                                        <?php for ($page = 1; $page <= $totalPages; $page++) { ?>
-                                                            <li class="page-item <?php if ($page == $currentPage) echo 'active'; ?>">
-                                                                <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
-                                                            </li>
-                                                        <?php } ?>
-                                                        <li class="page-item next">
-                                                            <a class="page-link" href="?page=<?php echo min($totalPages, $currentPage + 1); ?>"><i class="tf-icon bx bx-chevron-right"></i></a>
-                                                        </li>
-                                                        <li class="page-item last">
-                                                            <a class="page-link" href="?page=<?php echo $totalPages; ?>"><i class="tf-icon bx bx-chevrons-right"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                        <?php foreach ($result as $t1) { ?>
-                                            <div class="modal fade" id="exLargeModal<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog modal-xl" title="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel4"><?= $t1['booking_id']; ?></h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <form method="POST">
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="timeslot" class="form-label">Date</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                            <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="timeslot" class="form-label">Time</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="title" class="form-label">Service</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
-                                                                            <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="name" class="form-label">FullName</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="email" class="form-label">Email</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="meeting" class="form-label">meeting</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
-                                                                            <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                        <label for="tel" class="form-label">Mobile Number</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2">
-                                                                        <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <hr>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="status_user" class="form-label">Status</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                            <select id="status_user" name="status_user" class="form-select status-user-select">
-                                                                                <option value="<?= $t1['status_user']; ?>">
-                                                                                    <?php
-                                                                                    if ($t1['status_user'] == "'") {
-                                                                                        echo "Pending";
-                                                                                    } elseif ($t1['status_user'] == 1) {
-                                                                                        echo "Confirmed";
-                                                                                    } elseif ($t1['status_user'] == 2) {
-                                                                                        echo "Cancel Booking";
-                                                                                    } else {
-                                                                                        // กรณีค่าไม่ตรงกับเงื่อนไขที่กำหนด
-                                                                                        echo "Pending";
-                                                                                    }
-                                                                                    ?>
-                                                                                </option>
-                                                                                <option value="1">Confirmed</option>
-                                                                                <option value="2">Cancel</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2 service-section" style="display: none;">
-                                                                        <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                                                            <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2 note-section" style="display: none;">
-                                                                        <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
-                                                                        <div class="input-group input-group-merge">
-                                                                            <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                            <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <script>
-                                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                                            var modalContainer = document.getElementById('exLargeModal<?= $t1['id']; ?>');
-                                                                            var statusUserSelect = modalContainer.querySelector('.status-user-select');
-                                                                            var serviceSection = modalContainer.querySelector('.service-section');
-                                                                            var noteSection = modalContainer.querySelector('.note-section');
-                                                                            var serviceInput = serviceSection.querySelector('input[name="service"]');
-
-                                                                            // ซ่อนส่วนเริ่มต้นเมื่อหน้าต่างโมดัลถูกโหลด
-                                                                            serviceSection.style.display = 'none';
-                                                                            noteSection.style.display = 'none';
-                                                                            serviceInput.removeAttribute('required');
-
-                                                                            statusUserSelect.addEventListener('change', function() {
-                                                                                if (statusUserSelect.value === '1') {
-                                                                                    serviceSection.style.display = 'block';
-                                                                                    noteSection.style.display = 'block';
-                                                                                    serviceInput.setAttribute('required', 'required');
-                                                                                } else if (statusUserSelect.value === '2') {
-                                                                                    serviceSection.style.display = 'none';
-                                                                                    noteSection.style.display = 'block';
-                                                                                    serviceInput.removeAttribute('required');
-                                                                                    serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
-                                                                                } else {
-                                                                                    serviceSection.style.display = 'none';
-                                                                                    noteSection.style.display = 'none';
-                                                                                    serviceInput.removeAttribute('required');
-                                                                                }
-                                                                            });
-
-                                                                            // เรียกฟังก์ชันเช็คเงื่อนไขเริ่มต้นเมื่อหน้าเว็บโหลดเสร็จ
-                                                                            checkInitialConditions();
-
-                                                                            // ฟังก์ชันเช็คเงื่อนไขเริ่มต้น
-                                                                            function checkInitialConditions() {
-                                                                                if (statusUserSelect.value === '1') {
-                                                                                    serviceSection.style.display = 'block';
-                                                                                    noteSection.style.display = 'block';
-                                                                                    serviceInput.setAttribute('required', 'required');
-                                                                                } else if (statusUserSelect.value === '2') {
-                                                                                    serviceSection.style.display = 'none';
-                                                                                    noteSection.style.display = 'block';
-                                                                                    serviceInput.removeAttribute('required');
-                                                                                    serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
-                                                                                }
-                                                                            }
-                                                                        });
-                                                                    </script>
-                                                                    <input type="hidden" name="id" value="<?= $t1['id']; ?>">
-                                                                    <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                                    Close
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                                            </div>
-                                                        </form>
-                                                        <?php
-                                                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                            require_once 'index-db.php';
-                                                            // echo '<pre>';
-                                                            // print_r($_POST);
-                                                            // echo '</pre>';
-                                                        }
-                                                        ?>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li class="page-item first">
+                                                        <a class="page-link" href="?page=1"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                                                    </li>
+                                                    <li class="page-item prev">
+                                                        <a class="page-link" href="?page=<?php echo max(1, $currentPage - 1); ?>"><i class="tf-icon bx bx-chevron-left"></i></a>
+                                                    </li>
+                                                    <?php for ($page = 1; $page <= $totalPages; $page++) { ?>
+                                                        <li class="page-item <?php if ($page == $currentPage) echo 'active'; ?>">
+                                                            <a class="page-link" href="?page=<?php echo $page; ?>"><?php echo $page; ?></a>
+                                                        </li>
+                                                    <?php } ?>
+                                                    <li class="page-item next">
+                                                        <a class="page-link" href="?page=<?php echo min($totalPages, $currentPage + 1); ?>"><i class="tf-icon bx bx-chevron-right"></i></a>
+                                                    </li>
+                                                    <li class="page-item last">
+                                                        <a class="page-link" href="?page=<?php echo $totalPages; ?>"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
                                     </div>
+                                    <?php foreach ($result as $t1) { ?>
+                                        <div class="modal fade" id="exLargeModal<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl" title="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel4"><?= $t1['booking_id']; ?></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="POST">
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="timeslot" class="form-label">Date</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                                                        <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="timeslot" class="form-label">Time</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
+                                                                        <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="title" class="form-label">Service</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
+                                                                        <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="name" class="form-label">FullName</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                                                                        <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                                                        <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="meeting" class="form-label">meeting</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
+                                                                        <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                    <label for="tel" class="form-label">Mobile Number</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                        <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-12 mb-2">
+                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                        <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="status_user" class="form-label">Status</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                        <select id="status_user" name="status_user" class="form-select status-user-select">
+                                                                            <option value="<?= $t1['status_user']; ?>">
+                                                                                <?php
+                                                                                if ($t1['status_user'] == "'") {
+                                                                                    echo "Pending";
+                                                                                } elseif ($t1['status_user'] == 1) {
+                                                                                    echo "Confirmed";
+                                                                                } elseif ($t1['status_user'] == 2) {
+                                                                                    echo "Cancel Booking";
+                                                                                } else {
+                                                                                    // กรณีค่าไม่ตรงกับเงื่อนไขที่กำหนด
+                                                                                    echo "Pending";
+                                                                                }
+                                                                                ?>
+                                                                            </option>
+                                                                            <option value="1">Confirmed</option>
+                                                                            <option value="2">Cancel</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2 service-section" style="display: none;">
+                                                                    <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                                                        <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section" style="display: none;">
+                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                        <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <script>
+                                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                                        var modalContainer = document.getElementById('exLargeModal<?= $t1['id']; ?>');
+                                                                        var statusUserSelect = modalContainer.querySelector('.status-user-select');
+                                                                        var serviceSection = modalContainer.querySelector('.service-section');
+                                                                        var noteSection = modalContainer.querySelector('.note-section');
+                                                                        var serviceInput = serviceSection.querySelector('input[name="service"]');
+
+                                                                        // ซ่อนส่วนเริ่มต้นเมื่อหน้าต่างโมดัลถูกโหลด
+                                                                        serviceSection.style.display = 'none';
+                                                                        noteSection.style.display = 'none';
+                                                                        serviceInput.removeAttribute('required');
+
+                                                                        statusUserSelect.addEventListener('change', function() {
+                                                                            if (statusUserSelect.value === '1') {
+                                                                                serviceSection.style.display = 'block';
+                                                                                noteSection.style.display = 'block';
+                                                                                serviceInput.setAttribute('required', 'required');
+                                                                            } else if (statusUserSelect.value === '2') {
+                                                                                serviceSection.style.display = 'none';
+                                                                                noteSection.style.display = 'block';
+                                                                                serviceInput.removeAttribute('required');
+                                                                                serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
+                                                                            } else {
+                                                                                serviceSection.style.display = 'none';
+                                                                                noteSection.style.display = 'none';
+                                                                                serviceInput.removeAttribute('required');
+                                                                            }
+                                                                        });
+
+                                                                        // เรียกฟังก์ชันเช็คเงื่อนไขเริ่มต้นเมื่อหน้าเว็บโหลดเสร็จ
+                                                                        checkInitialConditions();
+
+                                                                        // ฟังก์ชันเช็คเงื่อนไขเริ่มต้น
+                                                                        function checkInitialConditions() {
+                                                                            if (statusUserSelect.value === '1') {
+                                                                                serviceSection.style.display = 'block';
+                                                                                noteSection.style.display = 'block';
+                                                                                serviceInput.setAttribute('required', 'required');
+                                                                            } else if (statusUserSelect.value === '2') {
+                                                                                serviceSection.style.display = 'none';
+                                                                                noteSection.style.display = 'block';
+                                                                                serviceInput.removeAttribute('required');
+                                                                                serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                </script>
+                                                                <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                                <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </form>
+                                                    <?php
+                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                        require_once 'index-db.php';
+                                                        // echo '<pre>';
+                                                        // print_r($_POST);
+                                                        // echo '</pre>';
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <?php require_once 'footer.php'; ?>
-                    <div class="content-backdrop fade"></div>
                 </div>
+                <?php require_once 'footer.php'; ?>
+                <div class="content-backdrop fade"></div>
             </div>
         </div>
-        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>

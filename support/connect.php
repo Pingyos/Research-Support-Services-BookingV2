@@ -1,8 +1,8 @@
 <?php
 // Database configuration
 $host = 'localhost';
-$username = 'edonation';
-$password = 'edonate@FON';
+$username = 'root';
+$password = '';
 $database = 'booking';
 
 // Create a new mysqli instance

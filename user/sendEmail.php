@@ -8,9 +8,9 @@ if (isset($_POST['name']) && isset($_POST['email'])) {
     $header = $_POST['header'];
     $detail = $_POST['detail'];
 
-    require_once "PHPMailer/PHPMailer.php";
-    require_once "PHPMailer/SMTP.php";
-    require_once "PHPMailer/Exception.php";
+    require_once "../PHPMailer/PHPMailer.php";
+    require_once "../PHPMailer/SMTP.php";
+    require_once "../PHPMailer/Exception.php";
 
     $mail = new PHPMailer();
 
