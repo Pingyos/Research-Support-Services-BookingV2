@@ -126,6 +126,7 @@
                                                                             <input type="text" name="timeslot" id="timeslot" class="form-control" value="" readonly />
                                                                         </div>
                                                                     </div>
+
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="title" class="form-label">Service</label>
                                                                         <div class="input-group input-group-merge">
@@ -137,21 +138,21 @@
                                                                         <label for="name" class="form-label">FullName</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="<?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?>" readonly />
+                                                                            <input type="text" name="name" id="name" class="form-control" value="PHATCHARAPON PINGYOS" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="<?php echo $json['cmuitaccount']; ?>" readonly />
+                                                                            <input type="text" name="email" id="email" class="form-control" value="phatcharapon.p@cmu.ac.th" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="tel" class="form-label">Mobile Number</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" readonly/>
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
@@ -176,6 +177,70 @@
                                                                     <input type="text" name="status_user" value="0" hidden>
                                                                     <input type="text" name="service" value="" hidden>
                                                                     <input type="text" name="note" value="" hidden>
+
+                                                                    <!-- fomr email -->
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                        <label for="header" class="form-label">header</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                            <input type="text" name="header" id="header" class="form-control" value="NRC: New Booking <?php echo $title; ?>" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                        <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                            <textarea id="detail" name="detail" class="form-control">
+                                                                                The Nursing Research Center (NRC) online submission system has received a submission for booking for Research Consult Service the following <br>
+                                                                                <hr>
+                                                                                Date: <?php echo $date; ?><br>
+                                                                                Service: <?php echo $title; ?><br>
+                                                                                Please wait for confirmation from the research consultant or the English editor within 24 hours.<br>
+
+                                                                                Thank you for using the NRC consultation service. Please do not hesitate to contact us with any questions or concerns.<br>
+                                                                                <hr>
+                                                                                Sincerely,<br>
+                                                                                Nursing Research Center (NRC)<br>
+                                                                                Faculty of Nursing, Chiang Mai University<br>
+                                                                                Should you have any queries, please contact us.<br>
+                                                                            </textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <script type="text/javascript">
+                                                                        function sendEmail() {
+                                                                            var name = $("#name");
+                                                                            var email = $("#email");
+                                                                            var header = $("#header");
+                                                                            var detail = $("#detail");
+
+                                                                            if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                                $.ajax({
+                                                                                    url: 'sendEmail.php',
+                                                                                    method: 'POST',
+                                                                                    dataType: 'json',
+                                                                                    data: {
+                                                                                        name: name.val(),
+                                                                                        email: email.val(),
+                                                                                        header: header.val(),
+                                                                                        detail: detail.val()
+                                                                                    },
+                                                                                    success: function(response) {
+                                                                                        $('.msg').text("Message send successfully");
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+
+                                                                        function isNotEmpty(caller) {
+                                                                            if (caller.val() == "") {
+                                                                                caller.css('border', '1px solid red');
+                                                                                return false;
+                                                                            } else caller.css('border', '');
+
+                                                                            return true;
+                                                                        }
+                                                                    </script>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -188,7 +253,6 @@
 
                                                     </div>
                                                     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-
                                                     <script>
                                                         $(document).ready(function() {
                                                             $(".book").click(function() {
@@ -207,6 +271,7 @@
                                             <?php
                                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 require_once 'bookingtime_t1_db.php';
+                                                require_once 'sendEmail.php';
                                                 // echo '<pre>';
                                                 // print_r($_POST);
                                                 // echo '</pre>';
