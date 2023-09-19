@@ -215,6 +215,7 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2 service-section" style="display: none;">
                                                                     <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
                                                                     <div class="input-group input-group-merge">
@@ -279,6 +280,72 @@
                                                                 </script>
                                                                 <input type="hidden" name="id" value="<?= $t1['id']; ?>">
                                                                 <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
+
+                                                                <!-- fomr email -->
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                    <label for="header" class="form-label">header</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                        <input type="text" name="header" id="header" class="form-control" value="NRC: New Booking <?= $t1['booking_id']; ?>" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                    <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                        <textarea id="detail" name="detail" class="form-control">
+                                                                            The Nursing Research Center (NRC) online submission system has confirmed the following booking:<br>
+                                                                            <hr>
+                                                                            Booking Id: <?= $t1['booking_id']; ?><br>
+                                                                            Date: <?= $t1['date']; ?><br>
+                                                                            Time: <?= $t1['timeslot']; ?><br>
+                                                                            Service Type: <?= $t1['title']; ?><br>
+                                                                            Meeting: <?= $t1['meeting']; ?><?= $t1['service']; ?>
+                                                                            <hr>
+                                                                            Thank you for using the NRC consultation service. Please do not hesitate to contact us with any questions or concerns.<br>
+                                                                            Sincerely,<br>
+                                                                            Nursing Research Center (NRC)<br>
+                                                                            Faculty of Nursing, Chiang Mai University<br>
+                                                                            Should you have any queries, please contact us.<br>
+                                                                            Tel.: 053-935033<br>
+                                                                        </textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <script type="text/javascript">
+                                                                    function sendEmail() {
+                                                                        var name = $("#name");
+                                                                        var email = $("#email");
+                                                                        var header = $("#header");
+                                                                        var detail = $("#detail");
+
+                                                                        if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                            $.ajax({
+                                                                                url: 'sendEmail.php',
+                                                                                method: 'POST',
+                                                                                dataType: 'json',
+                                                                                data: {
+                                                                                    name: name.val(),
+                                                                                    email: email.val(),
+                                                                                    header: header.val(),
+                                                                                    detail: detail.val()
+                                                                                },
+                                                                                success: function(response) {
+                                                                                    $('.msg').text("Message send successfully");
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+
+                                                                    function isNotEmpty(caller) {
+                                                                        if (caller.val() == "") {
+                                                                            caller.css('border', '1px solid red');
+                                                                            return false;
+                                                                        } else caller.css('border', '');
+
+                                                                        return true;
+                                                                    }
+                                                                </script>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

@@ -25,7 +25,7 @@ if (
     $stmt->close();
     if ($result) {
         // 
-        $sToken = ["LN8KPFOSBCYWrDpZThezFPSo76uK0atqX8slQFbLJ2z"];
+        $sToken = [""];
         $sMessage .= "";
         if ($row['status_user'] == 1) {
             $sMessage .= "Confirmed\n";
