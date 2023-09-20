@@ -64,7 +64,7 @@
                                     $offset = ($currentPage - 1) * $itemsPerPage;
 
                                     // ดึงข้อมูลจากฐานข้อมูลโดยใช้ LIMIT เพื่อแบ่งหน้า
-                                    $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY id DESC LIMIT ?, ?");
+                                    $stmt = $mysqli->prepare("SELECT * FROM booking WHERE title = ? OR title = ? OR title = ? ORDER BY date DESC LIMIT ?, ?");
                                     $stmt->bind_param("sssss", $searchTitle1, $searchTitle2, $searchTitle3, $offset, $itemsPerPage);
                                     $stmt->execute();
                                     $result = $stmt->get_result();
@@ -74,16 +74,18 @@
                                             <?php foreach ($result as $t1) {
                                                 $title = $t1['title'];
                                                 $bgColor = '';
-                                                if ($t1['status_user'] == 0) {
-                                                    $bgColor = '#E3E3E3'; // สีเทา
-                                                } else if ($t1['status_user'] == 1) {
-                                                    $bgColor = '#D9FFEA'; // สีเขียวอ่อน
-                                                } else if ($t1['status_user'] == 2) {
-                                                    $bgColor = '#FFE2D2'; // สีส้มอ่อน
+
+                                                if ($title == 'Editor English Hours') {
+                                                    $bgColor = '#FFECEA';
+                                                } else if ($title == 'Research Consult') {
+                                                    $bgColor = '#FFF7E6';
+                                                } else if ($title == 'Statistic Consult') {
+                                                    $bgColor = '#FFF7E6';
                                                 }
-                                                $status_user = $t1['status_user'];
-                                                $canCancel = $status_user != 1 && $status_user != 2;
+
+                                                $canCancel = $title != 'Editor English Hours' && $title != 'Research Consult' && $title != 'Statistic Consult';
                                             ?>
+
                                                 <div class="col-md- col-lg-4 mb-3">
                                                     <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
                                                         <div class="card-body">
@@ -93,7 +95,8 @@
                                                             </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
                                                             <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
-                                                            <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                            <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalConfirmed<?= $t1['id']; ?>">Confirmed</a>
+                                                            <a class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalCancel<?= $t1['id']; ?>">Cancel</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,11 +127,11 @@
                                         </div>
                                     </div>
                                     <?php foreach ($result as $t1) { ?>
-                                        <div class="modal fade" id="exLargeModal<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                        <div class="modal fade" id="exLargeModalConfirmed<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-xl" title="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel4"><?= $t1['booking_id']; ?></h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel4"> Confirmed <?= $t1['booking_id']; ?></h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <form method="POST">
@@ -194,173 +197,279 @@
                                                                 <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                     <label for="status_user" class="form-label">Status</label>
                                                                     <div class="input-group input-group-merge">
-                                                                        <span class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                        <select id="status_user" name="status_user" class="form-select status-user-select">
-                                                                            <option value="<?= $t1['status_user']; ?>">
-                                                                                <?php
-                                                                                if ($t1['status_user'] == "'") {
-                                                                                    echo "Pending";
-                                                                                } elseif ($t1['status_user'] == 1) {
-                                                                                    echo "Confirmed";
-                                                                                } elseif ($t1['status_user'] == 2) {
-                                                                                    echo "Cancel Booking";
-                                                                                } else {
-                                                                                    // กรณีค่าไม่ตรงกับเงื่อนไขที่กำหนด
-                                                                                    echo "Pending";
-                                                                                }
-                                                                                ?>
-                                                                            </option>
-                                                                            <option value="1">Confirmed</option>
-                                                                            <option value="2">Cancel</option>
-                                                                        </select>
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="Confirmed" readonly />
                                                                     </div>
                                                                 </div>
-
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2 service-section" style="display: none;">
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2 service-section">
                                                                     <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
                                                                     <div class="input-group input-group-merge">
                                                                         <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
                                                                         <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section" style="display: none;">
-                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
+                                                                    <label class="form-label" for="basic-icon-default-message">Note</label>
                                                                     <div class="input-group input-group-merge">
                                                                         <span class="input-group-text"><i class="bx bx-comment"></i></span>
                                                                         <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
                                                                     </div>
                                                                 </div>
-                                                                <script>
-                                                                    document.addEventListener('DOMContentLoaded', function() {
-                                                                        var modalContainer = document.getElementById('exLargeModal<?= $t1['id']; ?>');
-                                                                        var statusUserSelect = modalContainer.querySelector('.status-user-select');
-                                                                        var serviceSection = modalContainer.querySelector('.service-section');
-                                                                        var noteSection = modalContainer.querySelector('.note-section');
-                                                                        var serviceInput = serviceSection.querySelector('input[name="service"]');
-
-                                                                        // ซ่อนส่วนเริ่มต้นเมื่อหน้าต่างโมดัลถูกโหลด
-                                                                        serviceSection.style.display = 'none';
-                                                                        noteSection.style.display = 'none';
-                                                                        serviceInput.removeAttribute('required');
-
-                                                                        statusUserSelect.addEventListener('change', function() {
-                                                                            if (statusUserSelect.value === '1') {
-                                                                                serviceSection.style.display = 'block';
-                                                                                noteSection.style.display = 'block';
-                                                                                serviceInput.setAttribute('required', 'required');
-                                                                            } else if (statusUserSelect.value === '2') {
-                                                                                serviceSection.style.display = 'none';
-                                                                                noteSection.style.display = 'block';
-                                                                                serviceInput.removeAttribute('required');
-                                                                                serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
-                                                                            } else {
-                                                                                serviceSection.style.display = 'none';
-                                                                                noteSection.style.display = 'none';
-                                                                                serviceInput.removeAttribute('required');
-                                                                            }
-                                                                        });
-
-                                                                        // เรียกฟังก์ชันเช็คเงื่อนไขเริ่มต้นเมื่อหน้าเว็บโหลดเสร็จ
-                                                                        checkInitialConditions();
-
-                                                                        // ฟังก์ชันเช็คเงื่อนไขเริ่มต้น
-                                                                        function checkInitialConditions() {
-                                                                            if (statusUserSelect.value === '1') {
-                                                                                serviceSection.style.display = 'block';
-                                                                                noteSection.style.display = 'block';
-                                                                                serviceInput.setAttribute('required', 'required');
-                                                                            } else if (statusUserSelect.value === '2') {
-                                                                                serviceSection.style.display = 'none';
-                                                                                noteSection.style.display = 'block';
-                                                                                serviceInput.removeAttribute('required');
-                                                                                serviceInput.value = ''; // กำหนดค่าว่างให้กับฟิลด์ service
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                </script>
                                                                 <input type="hidden" name="id" value="<?= $t1['id']; ?>">
                                                                 <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
-
-                                                                <!-- fomr email -->
-                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
-                                                                    <label for="header" class="form-label">header</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
-                                                                        <input type="text" name="header" id="header" class="form-control" value="NRC: New Booking <?= $t1['booking_id']; ?>" />
-                                                                    </div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                <label for="header" class="form-label">header</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                    <input type="text" name="header" id="header" class="form-control" value="Booking Id: <?= $t1['booking_id']; ?> NRC: Confirmed Booking <?= $t1['title']; ?>" />
                                                                 </div>
+                                                            </div>
 
-                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
-                                                                    <label class="form-label" for="basic-icon-default-message">detail</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-message2" class="input-group-text"></span>
-                                                                        <textarea id="detail" name="detail" class="form-control">
+                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                    <textarea id="detail" name="detail" class="form-control">
                                                                             The Nursing Research Center (NRC) online submission system has confirmed the following booking:<br>
                                                                             <hr>
                                                                             Booking Id: <?= $t1['booking_id']; ?><br>
                                                                             Date: <?= $t1['date']; ?><br>
                                                                             Time: <?= $t1['timeslot']; ?><br>
                                                                             Service Type: <?= $t1['title']; ?><br>
-                                                                            Meeting: <?= $t1['meeting']; ?><?= $t1['service']; ?>
+                                                                            <?= $t1['meeting']; ?>: <?= $t1['service']; ?><br>
                                                                             <hr>
                                                                             Thank you for using the NRC consultation service. Please do not hesitate to contact us with any questions or concerns.<br>
+                                                                            <br>
                                                                             Sincerely,<br>
                                                                             Nursing Research Center (NRC)<br>
                                                                             Faculty of Nursing, Chiang Mai University<br>
                                                                             Should you have any queries, please contact us.<br>
                                                                             Tel.: 053-935033<br>
                                                                         </textarea>
-                                                                    </div>
                                                                 </div>
-                                                                <script type="text/javascript">
-                                                                    function sendEmail() {
-                                                                        var name = $("#name");
-                                                                        var email = $("#email");
-                                                                        var header = $("#header");
-                                                                        var detail = $("#detail");
-
-                                                                        if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
-                                                                            $.ajax({
-                                                                                url: 'sendEmail.php',
-                                                                                method: 'POST',
-                                                                                dataType: 'json',
-                                                                                data: {
-                                                                                    name: name.val(),
-                                                                                    email: email.val(),
-                                                                                    header: header.val(),
-                                                                                    detail: detail.val()
-                                                                                },
-                                                                                success: function(response) {
-                                                                                    $('.msg').text("Message send successfully");
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    }
-
-                                                                    function isNotEmpty(caller) {
-                                                                        if (caller.val() == "") {
-                                                                            caller.css('border', '1px solid red');
-                                                                            return false;
-                                                                        } else caller.css('border', '');
-
-                                                                        return true;
-                                                                    }
-                                                                </script>
                                                             </div>
+                                                            <script type="text/javascript">
+                                                                function sendEmail() {
+                                                                    var name = $("#name");
+                                                                    var email = $("#email");
+                                                                    var header = $("#header");
+                                                                    var detail = $("#detail");
+
+                                                                    if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                        $.ajax({
+                                                                            url: 'sendEmail.php',
+                                                                            method: 'POST',
+                                                                            dataType: 'json',
+                                                                            data: {
+                                                                                name: name.val(),
+                                                                                email: email.val(),
+                                                                                header: header.val(),
+                                                                                detail: detail.val()
+                                                                            },
+                                                                            success: function(response) {
+                                                                                $('.msg').text("Message send successfully");
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }
+
+                                                                function isNotEmpty(caller) {
+                                                                    if (caller.val() == "") {
+                                                                        caller.css('border', '1px solid red');
+                                                                        return false;
+                                                                    } else caller.css('border', '');
+
+                                                                    return true;
+                                                                }
+                                                            </script>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                                                 Close
                                                             </button>
-                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            <button type="submit" class="btn btn-primary">Confirmed</button>
                                                         </div>
                                                     </form>
                                                     <?php
                                                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                        require_once 'index-db.php';
-                                                        // echo '<pre>';
-                                                        // print_r($_POST);
-                                                        // echo '</pre>';
+                                                        // require_once 'index-db.php';
+                                                        // require_once 'sendEmail.php';
+                                                        echo '<pre>';
+                                                        print_r($_POST);
+                                                        echo '</pre>';
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                    <?php foreach ($result as $t1) { ?>
+                                        <div class="modal fade" id="exLargeModalCancel<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl" title="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel4"> Cancel <?= $t1['booking_id']; ?></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="POST">
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="timeslot" class="form-label">Date</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                                                        <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="timeslot" class="form-label">Time</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
+                                                                        <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="title" class="form-label">Service</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
+                                                                        <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="name" class="form-label">FullName</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                                                                        <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                                                        <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                    <label for="meeting" class="form-label">meeting</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
+                                                                        <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                    <label for="tel" class="form-label">Mobile Number</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                        <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-12 mb-2">
+                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                        <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                    <label for="status_user" class="form-label">Status</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="Cancel" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
+                                                                    <label class="form-label" for="basic-icon-default-message">Note</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                        <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                                <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                <label for="header" class="form-label">header</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                    <input type="text" name="header" id="header" class="form-control" value="Booking Id: Booking Id: <?= $t1['booking_id']; ?> NRC: Canceled Booking <?= $t1['title']; ?>" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                    <textarea id="detail" name="detail" class="form-control">
+                                                                        The Nursing Research Center (NRC) online submission system regrets to inform you that the following booking has been cancelled:<br>
+                                                                        <hr>
+                                                                        Booking Id: <?= $t1['booking_id']; ?><br>
+                                                                        Date: <?= $t1['date']; ?><br>
+                                                                        Time: <?= $t1['timeslot']; ?><br>
+                                                                        Service <?= $t1['title']; ?><br>
+                                                                        Status: canceled<br>
+                                                                        Please book a new date/time at https://app.nurse.cmu.ac.th/booking<br>
+                                                                        <hr>
+                                                                        Thank you for using the NRC consultation service. Please do not hesitate to contact us with any questions or concerns.<br>
+                                                                        Sincerely,<br>
+                                                                        Nursing Research Center (NRC)<br>
+                                                                        Faculty of Nursing, Chiang Mai University<br>
+                                                                        Should you have any queries, please contact us.<br>
+                                                                        Tel.: 053-935033<br>
+
+                                                                        </textarea>
+                                                                </div>
+                                                            </div>
+                                                            <script type="text/javascript">
+                                                                function sendEmail() {
+                                                                    var name = $("#name");
+                                                                    var email = $("#email");
+                                                                    var header = $("#header");
+                                                                    var detail = $("#detail");
+
+                                                                    if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                        $.ajax({
+                                                                            url: 'sendEmail.php',
+                                                                            method: 'POST',
+                                                                            dataType: 'json',
+                                                                            data: {
+                                                                                name: name.val(),
+                                                                                email: email.val(),
+                                                                                header: header.val(),
+                                                                                detail: detail.val()
+                                                                            },
+                                                                            success: function(response) {
+                                                                                $('.msg').text("Message send successfully");
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }
+
+                                                                function isNotEmpty(caller) {
+                                                                    if (caller.val() == "") {
+                                                                        caller.css('border', '1px solid red');
+                                                                        return false;
+                                                                    } else caller.css('border', '');
+
+                                                                    return true;
+                                                                }
+                                                            </script>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Confirmed</button>
+                                                        </div>
+                                                    </form>
+                                                    <?php
+                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                        // require_once 'index-db.php';
+                                                        // require_once 'sendEmail.php';
+                                                        echo '<pre>';
+                                                        print_r($_POST);
+                                                        echo '</pre>';
                                                     }
                                                     ?>
                                                 </div>
