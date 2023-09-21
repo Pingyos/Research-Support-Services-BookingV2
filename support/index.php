@@ -95,7 +95,18 @@
                                                             </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
                                                             <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
-                                                            <a class="btn btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalPending<?= $t1['id']; ?>">Pending</a>
+                                                            <?php
+                                                            $buttonClass = '';
+                                                            if ($t1['status_user'] === 'pending') {
+                                                                $buttonClass = 'btn-secondary';
+                                                            } elseif ($t1['status_user'] === 'confirmed') {
+                                                                $buttonClass = 'btn-success';
+                                                            } elseif ($t1['status_user'] === 'cancel') {
+                                                                $buttonClass = 'btn-danger';
+                                                            }
+                                                            ?>
+
+                                                            <a class="btn text-white <?php echo $buttonClass; ?>" data-bs-toggle="modal" data-bs-target="#exLargeModalPending<?= $t1['id']; ?>"><?= $t1['status_user']; ?></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -193,13 +204,43 @@
                                                                             <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="status_user" class="form-label">Status</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                            <?php if (!empty($t1['status_user'])) : ?>
+                                                                                <input type="text" name="status_user" id="status_user" class="form-control" value="<?= $t1['status_user']; ?>" readonly />
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                    <?php if (!empty($t1['service'])) : ?>
+                                                                        <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                            <label for="meeting" class="form-label"><?= $t1['meeting']; ?></label>
+                                                                            <div class="input-group input-group-merge">
+                                                                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                                                                <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['service']; ?>" readonly />
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                    <?php if (!empty($t1['note'])) : ?>
+                                                                        <div class="col-lg-12 col-md-12 col-12 mb-2">
+                                                                            <label class="form-label" for="basic-icon-default-message">Note</label>
+                                                                            <div class="input-group input-group-merge">
+                                                                                <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                                <textarea id="note" name="note" class="form-control" placeholder="" aria-describedby="basic-icon-default-message2" readonly><?= $t1['note']; ?></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php endif; ?>
                                                                     <hr>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
                                                                         <div class="input-group input-group-merge">
-                                                                            <a class="btn btn-success text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalConfirmed<?= $t1['id']; ?>">Confirmed</a>
-                                                                            <a class="btn btn-danger text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalCancel<?= $t1['id']; ?>">Cancel</a>
+                                                                            <?php if ($t1['status_user'] !== 'confirmed' && $t1['status_user'] !== 'cancel') : ?>
+                                                                                <a class="btn btn-success text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalConfirmed<?= $t1['id']; ?>">Confirmed</a>
+                                                                                <a class="btn btn-danger text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalCancel<?= $t1['id']; ?>">Cancel</a>
+                                                                            <?php endif; ?>
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
                                                             </div>
                                                         </form>

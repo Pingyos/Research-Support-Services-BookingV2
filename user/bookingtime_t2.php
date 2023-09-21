@@ -101,49 +101,49 @@
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                        <label for="timeslot" class="form-label">Date</label>
+                                                                        <label for="date" class="form-label">Date</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                            <input type="text" name="date" id="date" class="form-control" value="" readonly />
+                                                                            <input type="text" name="date" id="date" class="form-control" value="<?= $date; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="timeslot" class="form-label">Time</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="" readonly />
+                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $timeslot; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="title" class="form-label">Service</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
-                                                                            <input type="text" name="title" id="title" class="form-control" value="<?php echo isset($_GET['title']) ? htmlspecialchars($_GET['title']) : ''; ?>" readonly />
+                                                                            <input type="text" name="title" id="title" class="form-control" value="<?= $title; ?>" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="name" class="form-label">FullName</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                            <input type="text" name="name" id="name" class="form-control" value="<?php echo $json['firstname_EN'] . ' ' . $json['lastname_EN']; ?>" readonly />
+                                                                            <input type="text" name="name" id="name" class="form-control" value="PHATCHARAPON PINGYOS" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="email" class="form-label">Email</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                            <input type="text" name="email" id="email" class="form-control" value="<?php echo $json['cmuitaccount']; ?>" readonly />
+                                                                            <input type="text" name="email" id="email" class="form-control" value="phatcharapon.p@cmu.ac.th" readonly />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6 col-md-6 col-12 mb-2">
                                                                         <label for="tel" class="form-label">Mobile Number</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" readonly/>
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                        <label for="tel" class="form-label">Meeting Option</label>
+                                                                        <label for="meeting" class="form-label">Meeting Option</label>
                                                                         <div class="input-group input-group-merge">
                                                                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
                                                                             <select class="form-select" name="meeting" required id="meeting" aria-label="Default select example">
@@ -153,7 +153,6 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-
                                                                     <div class="col-lg-12 col-md-6 col-12 mb-2">
                                                                         <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
                                                                         <div class="input-group input-group-merge">
@@ -161,40 +160,107 @@
                                                                             <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Could you please provide a concise summary of your manuscript? Let me know what assistance is needed to this." aria-describedby="basic-icon-default-message2" required></textarea>
                                                                         </div>
                                                                     </div>
-                                                                    <input type="text" name="booking_id" value="<?php echo 'P-' . date('is') . '-' . (date('Y')); ?>" hidden>
+                                                                    <input type="text" name="booking_id" value="<?php echo 'M-' . date('is') . '-' . (date('Y')); ?>" hidden>
                                                                     <input type="text" name="status_user" value="0" hidden>
                                                                     <input type="text" name="service" value="" hidden>
                                                                     <input type="text" name="note" value="" hidden>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                            Close
+                                                                        </button>
+                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                    <!-- fomr email -->
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                        <label for="header" class="form-label">header</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                            <input type="text" name="header" id="header" class="form-control" value="NRC: New Booking  <?php echo $title; ?>" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                        <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                            <textarea id="detail" name="detail" class="form-control">
+                                                                                Dear PHATCHARAPON PINGYOS<br>
+                                                                                
+                                                                                The Nursing Research Center (NRC) online submission system has received a submission for booking for Research Consult Service the following Booking <br>
+                                                                                <hr>
+                                                                                Please wait for confirmation from the research consultant or the English editor within 24 hours.<br>
+
+                                                                                Thank you for using the NRC consultation service. Please do not hesitate to contact us with any questions or concerns.<br>
+                                                                                <hr>
+                                                                                Sincerely,<br>
+                                                                                Nursing Research Center (NRC)<br>
+                                                                                Faculty of Nursing, Chiang Mai University<br>
+                                                                                Should you have any queries, please contact us.<br>
+                                                                                Tel.: 053-935033<br>
+                                                                            </textarea>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <input type="hidden" name="status_user" id="status_user" class="form-control" value="pending" readonly />
+                                                                    <script type="text/javascript">
+                                                                        function sendEmail() {
+                                                                            var name = $("#name");
+                                                                            var email = $("#email");
+                                                                            var header = $("#header");
+                                                                            var detail = $("#detail");
+
+                                                                            if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                                $.ajax({
+                                                                                    url: 'sendEmail.php',
+                                                                                    method: 'POST',
+                                                                                    dataType: 'json',
+                                                                                    data: {
+                                                                                        name: name.val(),
+                                                                                        email: email.val(),
+                                                                                        header: header.val(),
+                                                                                        detail: detail.val()
+                                                                                    },
+                                                                                    success: function(response) {
+                                                                                        $('.msg').text("Message send successfully");
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+
+                                                                        function isNotEmpty(caller) {
+                                                                            if (caller.val() == "") {
+                                                                                caller.css('border', '1px solid red');
+                                                                                return false;
+                                                                            } else caller.css('border', '');
+
+                                                                            return true;
+                                                                        }
+                                                                    </script>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                                    Close
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                                            </div>
                                                         </form>
-
                                                     </div>
-                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery library -->
+                                                    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
                                                     <script>
                                                         $(document).ready(function() {
                                                             $(".book").click(function() {
                                                                 var timeslot = $(this).data('timeslot');
                                                                 var urlParams = new URLSearchParams(window.location.search);
-                                                                var dateParam = urlParams.get('date');
-
+                                                                var date = urlParams.get('date');
                                                                 $("#timeslot").val(timeslot);
-                                                                $("#date").val(dateParam);
+                                                                $("#date").val(date);
                                                                 $("#exLargeModal").modal('show');
                                                             });
                                                         });
                                                     </script>
+
                                                 </div>
                                             </div>
                                             <?php
                                             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                require_once 'bookingtime_t2_db.php';
+                                                require_once 'bookingtime_t1_db.php';
+                                                require_once 'sendEmail.php';
                                                 // echo '<pre>';
                                                 // print_r($_POST);
                                                 // echo '</pre>';

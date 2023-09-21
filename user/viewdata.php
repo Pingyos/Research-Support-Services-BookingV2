@@ -34,7 +34,7 @@
                                                 <div class="row">
                                                     <?php
                                                     require_once 'connect.php';
-
+                                                    $email = "phatcharapon.p@cmu.ac.th";
                                                     $itemsPerPage = 9;
                                                     $stmtCount = $mysqli->prepare("SELECT COUNT(*) AS total FROM booking WHERE email = ? ORDER BY dateCreate DESC");
                                                     $stmtCount->bind_param('s', $email);
@@ -56,15 +56,15 @@
                                                         $title = $t1['title'];
 
                                                         $bgColor = '';
-                                                        if ($t1['status_user'] == 0) {
+                                                        if ($t1['status_user'] == 'pending') {
                                                             $bgColor = '#E3E3E3'; // สีเทา
-                                                        } elseif ($t1['status_user'] == 1) {
+                                                        } elseif ($t1['status_user'] == 'confirmed') {
                                                             $bgColor = '#D9FFEA'; // สีเขียวอ่อน
-                                                        } elseif ($t1['status_user'] == 2) {
+                                                        } elseif ($t1['status_user'] == 'cancel') {
                                                             $bgColor = '#FFE2D2'; // สีส้มอ่อน
                                                         }
                                                         $status_user = $t1['status_user'];
-                                                        $canCancel = $status_user != 1 && $status_user != 2;
+                                                        $canCancel = $status_user != 'pending';
                                                     ?>
                                                         <div class="col-md-6 col-lg-4 mb-3">
                                                             <div class="card h-100" style="background-color: <?php echo $bgColor; ?>">
@@ -75,8 +75,8 @@
                                                                     </h5>
                                                                     <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
                                                                     <p class="card-text"><?= $t1['meeting']; ?> | <?= $t1['service']; ?></p>
-                                                                    <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
-                                                                    <?php if ($canCancel) : ?>
+                                                                    <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModal<?= $t1['id']; ?>">Details</a>
+                                                                    <?php if ($t1['status_user'] === 'pending') : ?>
                                                                         <a class="btn btn-danger text-white" href="javascript:void(0);" onclick="confirmDelete('<?= $t1['booking_id']; ?>')">Cancel</a>
                                                                         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
                                                                         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
@@ -192,7 +192,7 @@
                                                                                 <?php endif; ?>
                                                                                 <?php if (!empty($t1['note'])) : ?>
                                                                                     <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
-                                                                                        <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                                        <label class="form-label" for="basic-icon-default-message">Note</label>
                                                                                         <div class="input-group input-group-merge">
                                                                                             <span class="input-group-text"><i class="bx bx-comment"></i></span>
                                                                                             <textarea name="note" class="form-control" placeholder="Hi" readonly><?= $t1['note']; ?></textarea>
