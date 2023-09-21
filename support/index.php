@@ -78,9 +78,9 @@
                                                 if ($title == 'Editor English Hours') {
                                                     $bgColor = '#FFECEA';
                                                 } else if ($title == 'Research Consult') {
-                                                    $bgColor = '#FFF7E6';
+                                                    $bgColor = '#D2FFFF';
                                                 } else if ($title == 'Statistic Consult') {
-                                                    $bgColor = '#FFF7E6';
+                                                    $bgColor = '#D2FFFF';
                                                 }
 
                                                 $canCancel = $title != 'Editor English Hours' && $title != 'Research Consult' && $title != 'Statistic Consult';
@@ -95,13 +95,13 @@
                                                             </h5>
                                                             <p class="card-text"><?= $t1['name']; ?> | <?= $t1['title']; ?></p>
                                                             <p class="card-text"><b><?= $t1['meeting']; ?> : <?= $t1['service']; ?></b></p>
-                                                            <a class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalConfirmed<?= $t1['id']; ?>">Confirmed</a>
-                                                            <a class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalCancel<?= $t1['id']; ?>">Cancel</a>
+                                                            <a class="btn btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#exLargeModalPending<?= $t1['id']; ?>">Pending</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             <?php } ?>
                                         </div>
+
                                         <div class="d-flex justify-content-end">
                                             <nav aria-label="Page navigation">
                                                 <ul class="pagination">
@@ -125,107 +125,130 @@
                                                 </ul>
                                             </nav>
                                         </div>
-                                    </div>
-                                    <?php foreach ($result as $t1) { ?>
-                                        <div class="modal fade" id="exLargeModalConfirmed<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-xl" title="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel4"> Confirmed <?= $t1['booking_id']; ?></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                        <?php foreach ($result as $t1) { ?>
+                                            <div class="modal fade" id="exLargeModalPending<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl" title="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel4"> Confirmed <?= $t1['booking_id']; ?></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="timeslot" class="form-label">Date</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                                                            <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="timeslot" class="form-label">Time</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
+                                                                            <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="title" class="form-label">Service</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
+                                                                            <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="name" class="form-label">FullName</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                                                                            <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="email" class="form-label">Email</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                                                            <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="meeting" class="form-label">meeting</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
+                                                                            <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                        <label for="tel" class="form-label">Mobile Number</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                                                                            <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2">
+                                                                        <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                            <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                        <div class="input-group input-group-merge">
+                                                                            <a class="btn btn-success text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalConfirmed<?= $t1['id']; ?>">Confirmed</a>
+                                                                            <a class="btn btn-danger text-white col-lg-6 col-md-6 col-12 mb-2" data-bs-toggle="modal" data-bs-target="#exLargeModalCancel<?= $t1['id']; ?>">Cancel</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <form method="POST">
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="timeslot" class="form-label">Date</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                        <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+
+                                        <?php foreach ($result as $t1) { ?>
+                                            <div class="modal fade" id="exLargeModalConfirmed<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl" title="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel4"> Confirmed <?= $t1['booking_id']; ?></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                                                                        <label for="status_user" class="form-label">Status</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                            <input type="text" name="status_user" id="status_user" class="form-control" value="confirmed" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-12 mb-2 service-section">
+                                                                        <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                                                            <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
+                                                                        <label class="form-label" for="basic-icon-default-message">Note</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                            <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="timeslot" class="form-label">Time</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                        <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="title" class="form-label">Service</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
-                                                                        <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="name" class="form-label">FullName</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                        <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="email" class="form-label">Email</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                        <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="meeting" class="form-label">meeting</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
-                                                                        <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                    <label for="tel" class="form-label">Mobile Number</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                        <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12 col-12 mb-2">
-                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                        <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="status_user" class="form-label">Status</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="Confirmed" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2 service-section">
-                                                                    <label for="service" class="form-label"><?= $t1['meeting']; ?></label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                                                        <input type="text" name="service" class="form-control" value="<?= $t1['service']; ?>" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
-                                                                    <label class="form-label" for="basic-icon-default-message">Note</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                        <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <input type="hidden" name="id" value="<?= $t1['id']; ?>">
-                                                                <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
                                                             </div>
                                                             <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
                                                                 <label for="header" class="form-label">header</label>
                                                                 <div class="input-group input-group-merge">
                                                                     <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
-                                                                    <input type="text" name="header" id="header" class="form-control" value="Booking Id: <?= $t1['booking_id']; ?> NRC: Confirmed Booking <?= $t1['title']; ?>" />
+                                                                    <input type="text" name="header" id="header" class="form-control" value="NRC: Confirmed Booking <?= $t1['booking_id']; ?> | <?= $t1['title']; ?>" />
                                                                 </div>
                                                             </div>
-
                                                             <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
                                                                 <label class="form-label" for="basic-icon-default-message">detail</label>
                                                                 <div class="input-group input-group-merge">
@@ -249,6 +272,10 @@
                                                                         </textarea>
                                                                 </div>
                                                             </div>
+                                                            <input type="hidden" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                            <input type="hidden" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                            <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                            <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
                                                             <script type="text/javascript">
                                                                 function sendEmail() {
                                                                     var name = $("#name");
@@ -283,125 +310,68 @@
                                                                     return true;
                                                                 }
                                                             </script>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                                Close
-                                                            </button>
-                                                            <button type="submit" class="btn btn-primary">Confirmed</button>
-                                                        </div>
-                                                    </form>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Confirmed</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                     <?php
                                                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                        // require_once 'index-db.php';
-                                                        // require_once 'sendEmail.php';
-                                                        echo '<pre>';
-                                                        print_r($_POST);
-                                                        echo '</pre>';
+                                                        require_once 'index-db.php';
+                                                        require_once 'sendEmail.php';
+                                                        // echo '<pre>';
+                                                        // print_r($_POST);
+                                                        // echo '</pre>';
                                                     }
                                                     ?>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php } ?>
-                                    <?php foreach ($result as $t1) { ?>
-                                        <div class="modal fade" id="exLargeModalCancel<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-xl" title="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel4"> Cancel <?= $t1['booking_id']; ?></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <form method="POST">
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="timeslot" class="form-label">Date</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                                                        <input type="text" name="date" id="date" class="form-control" value="<?= $t1['date']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="timeslot" class="form-label">Time</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-time"></i></span>
-                                                                        <input type="text" name="timeslot" id="timeslot" class="form-control" value="<?= $t1['timeslot']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="title" class="form-label">Service</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-purchase-tag-alt"></i></span>
-                                                                        <input type="text" name="title" id="title" class="form-control" value="<?= $t1['title']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="name" class="form-label">FullName</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                                        <input type="text" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="email" class="form-label">Email</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                                        <input type="text" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6 col-md-6 col-12 mb-2">
-                                                                    <label for="meeting" class="form-label">meeting</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-navigation"></i></span>
-                                                                        <input type="text" name="meeting" id="meeting" class="form-control" value="<?= $t1['meeting']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                    <label for="tel" class="form-label">Mobile Number</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                                        <input type="text" name="tel" id="tel" class="form-control" value="<?= $t1['tel']; ?>" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12 col-12 mb-2">
-                                                                    <label class="form-label" for="basic-icon-default-message">Manuscript Title</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                        <textarea id="manutitle" name="manutitle" class="form-control" placeholder="Hi" aria-describedby="basic-icon-default-message2" readonly><?= $t1['manutitle']; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="col-lg-12 col-md-6 col-12 mb-2">
-                                                                    <label for="status_user" class="form-label">Status</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
-                                                                        <input type="text" name="status_user" id="status_user" class="form-control" value="Cancel" readonly />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
-                                                                    <label class="form-label" for="basic-icon-default-message">Note</label>
-                                                                    <div class="input-group input-group-merge">
-                                                                        <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                                                                        <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <input type="hidden" name="id" value="<?= $t1['id']; ?>">
-                                                                <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
-                                                            </div>
-                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
-                                                                <label for="header" class="form-label">header</label>
-                                                                <div class="input-group input-group-merge">
-                                                                    <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
-                                                                    <input type="text" name="header" id="header" class="form-control" value="Booking Id: Booking Id: <?= $t1['booking_id']; ?> NRC: Canceled Booking <?= $t1['title']; ?>" />
-                                                                </div>
-                                                            </div>
+                                        <?php } ?>
 
-                                                            <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
-                                                                <label class="form-label" for="basic-icon-default-message">detail</label>
-                                                                <div class="input-group input-group-merge">
-                                                                    <span id="basic-icon-default-message2" class="input-group-text"></span>
-                                                                    <textarea id="detail" name="detail" class="form-control">
+                                        <?php foreach ($result as $t1) { ?>
+                                            <div class="modal fade" id="exLargeModalCancel<?= $t1['id']; ?>" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-xl" title="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel4"> Cancel <?= $t1['booking_id']; ?></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form method="POST">
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-md-6 col-12 mb-2">
+                                                                        <label for="status_user" class="form-label">Status</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-down-arrow-alt"></i></span>
+                                                                            <input type="text" name="status_user" id="status_user" class="form-control" value="cancel" readonly />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12 col-12 mb-2 note-section">
+                                                                        <label class="form-label" for="basic-icon-default-message">Note</label>
+                                                                        <div class="input-group input-group-merge">
+                                                                            <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                                                                            <textarea name="note" class="form-control" placeholder="Note"><?= $t1['note']; ?></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                                    <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
+                                                                </div>
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                    <label for="header" class="form-label">header</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-fullname2" class="input-group-text"></i></span>
+                                                                        <input type="text" name="header" id="header" class="form-control" value="NRC: Canceled Booking <?= $t1['booking_id']; ?> | <?= $t1['title']; ?>" />
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="service" class="form-control" value="" />
+                                                                <div class="col-lg-12 col-md-6 col-12 mb-2" style="display: none;">
+                                                                    <label class="form-label" for="basic-icon-default-message">detail</label>
+                                                                    <div class="input-group input-group-merge">
+                                                                        <span id="basic-icon-default-message2" class="input-group-text"></span>
+                                                                        <textarea id="detail" name="detail" class="form-control">
                                                                         The Nursing Research Center (NRC) online submission system regrets to inform you that the following booking has been cancelled:<br>
                                                                         <hr>
                                                                         Booking Id: <?= $t1['booking_id']; ?><br>
@@ -419,63 +389,69 @@
                                                                         Tel.: 053-935033<br>
 
                                                                         </textarea>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <script type="text/javascript">
-                                                                function sendEmail() {
-                                                                    var name = $("#name");
-                                                                    var email = $("#email");
-                                                                    var header = $("#header");
-                                                                    var detail = $("#detail");
+                                                                <input type="hidden" name="name" id="name" class="form-control" value="<?= $t1['name']; ?>" readonly />
+                                                                <input type="hidden" name="email" id="email" class="form-control" value="<?= $t1['email']; ?>" readonly />
+                                                                <input type="hidden" name="id" value="<?= $t1['id']; ?>">
+                                                                <input type="hidden" name="dateCreate" value="<?= date('Y-m-d H:i:s'); ?>">
+                                                                <script type="text/javascript">
+                                                                    function sendEmail() {
+                                                                        var name = $("#name");
+                                                                        var email = $("#email");
+                                                                        var header = $("#header");
+                                                                        var detail = $("#detail");
 
-                                                                    if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
-                                                                        $.ajax({
-                                                                            url: 'sendEmail.php',
-                                                                            method: 'POST',
-                                                                            dataType: 'json',
-                                                                            data: {
-                                                                                name: name.val(),
-                                                                                email: email.val(),
-                                                                                header: header.val(),
-                                                                                detail: detail.val()
-                                                                            },
-                                                                            success: function(response) {
-                                                                                $('.msg').text("Message send successfully");
-                                                                            }
-                                                                        });
+                                                                        if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(header) && isNotEmpty(detail)) {
+                                                                            $.ajax({
+                                                                                url: 'sendEmail.php',
+                                                                                method: 'POST',
+                                                                                dataType: 'json',
+                                                                                data: {
+                                                                                    name: name.val(),
+                                                                                    email: email.val(),
+                                                                                    header: header.val(),
+                                                                                    detail: detail.val()
+                                                                                },
+                                                                                success: function(response) {
+                                                                                    $('.msg').text("Message send successfully");
+                                                                                }
+                                                                            });
+                                                                        }
                                                                     }
-                                                                }
 
-                                                                function isNotEmpty(caller) {
-                                                                    if (caller.val() == "") {
-                                                                        caller.css('border', '1px solid red');
-                                                                        return false;
-                                                                    } else caller.css('border', '');
+                                                                    function isNotEmpty(caller) {
+                                                                        if (caller.val() == "") {
+                                                                            caller.css('border', '1px solid red');
+                                                                            return false;
+                                                                        } else caller.css('border', '');
 
-                                                                    return true;
-                                                                }
-                                                            </script>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                                                Close
-                                                            </button>
-                                                            <button type="submit" class="btn btn-primary">Confirmed</button>
-                                                        </div>
-                                                    </form>
-                                                    <?php
-                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                        // require_once 'index-db.php';
-                                                        // require_once 'sendEmail.php';
-                                                        echo '<pre>';
-                                                        print_r($_POST);
-                                                        echo '</pre>';
-                                                    }
-                                                    ?>
+                                                                        return true;
+                                                                    }
+                                                                </script>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">Confirmed</button>
+                                                            </div>
+                                                        </form>
+                                                        <?php
+                                                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                            require_once 'index-db.php';
+                                                            require_once 'sendEmail.php';
+                                                            // echo '<pre>';
+                                                            // print_r($_POST);
+                                                            // echo '</pre>';
+                                                        }
+                                                        ?>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php } ?>
+                                        <?php } ?>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

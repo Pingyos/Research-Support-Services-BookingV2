@@ -16,7 +16,6 @@ if (
     $stmt->bind_param('ssssi', $service, $note, $status_user, $dateCreate, $id);
     $result = $stmt->execute();
 
-    // Fetch the updated data from the database
     $stmt = $mysqli->prepare("SELECT * FROM booking WHERE id=?");
     $stmt->bind_param('i', $id);
     $stmt->execute();
@@ -24,16 +23,8 @@ if (
     $row = $result->fetch_assoc();
     $stmt->close();
     if ($result) {
-        // 
         $sToken = [""];
         $sMessage .= "";
-        if ($row['status_user'] == 1) {
-            $sMessage .= "Confirmed\n";
-        } elseif ($row['status_user'] == 2) {
-            $sMessage .= "Cencel\n";
-        } else {
-            $sMessage .= "Unknown\n"; // Handle other values as needed
-        }
         $sMessage .= "Booking Id: " . $row['booking_id'] . "\n";
         $sMessage .= "Date: " . $row['date'] . "\n";
         $sMessage .= "Time: " . $row['timeslot'] . "\n";
