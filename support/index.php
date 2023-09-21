@@ -44,9 +44,9 @@
                                     require_once 'connect.php';
                                     $itemsPerPage = 9;
 
-                                    $searchTitle1 = "Editor English Hours";
-                                    $searchTitle2 = "Research Consult";
-                                    $searchTitle3 = "Statistic Consult";
+                                    $searchTitle1 = $row['title1'];
+                                    $searchTitle2 = $row['title2'];
+                                    $searchTitle3 = $row['title3'];
 
                                     // คำนวณจำนวนข้อมูลทั้งหมด
                                     $stmtCount = $mysqli->prepare("SELECT COUNT(*) FROM booking WHERE title = ? OR title = ? OR title = ?");

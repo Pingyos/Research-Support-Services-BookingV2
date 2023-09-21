@@ -34,7 +34,6 @@
                                                 <div class="row">
                                                     <?php
                                                     require_once 'connect.php';
-                                                    $email = "phatcharapon.p@cmu.ac.th";
                                                     $itemsPerPage = 9;
                                                     $stmtCount = $mysqli->prepare("SELECT COUNT(*) AS total FROM booking WHERE email = ? ORDER BY dateCreate DESC");
                                                     $stmtCount->bind_param('s', $email);
